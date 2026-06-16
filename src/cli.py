@@ -157,6 +157,7 @@ def status() -> None:
 @app.command()
 def monitor(interval: int = typer.Option(2, help="Refresh interval in seconds.")) -> None:
     """Stream recent alerts to the terminal."""
+    console.print("[cyan]Monitoring for network intrusions... (Press Ctrl+C to stop)[/cyan]")
     seen: set[str] = set()
     while True:
         payload = _api("/alerts?limit=10")
