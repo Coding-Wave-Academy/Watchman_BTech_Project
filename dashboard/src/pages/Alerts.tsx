@@ -192,7 +192,7 @@ export default function Alerts() {
                     </TableCell>
                     <TableCell>
                       <span className="font-mono text-xs text-muted-foreground bg-secondary/50 px-2 py-1 rounded inline-flex items-center gap-1">
-                        🔗 {a.tx_hash ? `${a.tx_hash.slice(0,4)}...${a.tx_hash.slice(-4)}` : `0x7f...a${a.alert_id}`}
+                        {a.tx_hash ? `${a.tx_hash.slice(0,4)}...${a.tx_hash.slice(-4)}` : "Pending"}
                       </span>
                     </TableCell>
                     <TableCell className="text-right pr-6">

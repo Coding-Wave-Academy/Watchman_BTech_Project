@@ -209,7 +209,7 @@ export default function Topology() {
           <Card className={`glass-panel ${selectedNode.status === "threat" ? "border-red-500/30" : "border-border"}`}>
             <CardHeader className="pb-2">
               <CardTitle className={`text-xs font-bold uppercase tracking-wider ${selectedNode.status === "threat" ? "text-red-400" : selectedNode.status === "suspicious" ? "text-amber-400" : "text-emerald-400"}`}>
-                {selectedNode.status === "threat" ? "⚠ THREAT DETECTED" : selectedNode.status === "suspicious" ? "⚡ SUSPICIOUS" : "✓ SECURE"}
+                {selectedNode.status === "threat" ? "THREAT DETECTED" : selectedNode.status === "suspicious" ? "SUSPICIOUS" : "SECURE"}
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-2 text-sm">
@@ -218,7 +218,7 @@ export default function Topology() {
               <div className="flex justify-between"><span className="text-muted-foreground">OS</span><span className="font-medium">{selectedNode.os}</span></div>
               <div className="flex justify-between"><span className="text-muted-foreground">ML Risk Score</span><span className={`font-bold ${selectedNode.riskScore >= 0.7 ? "text-red-400" : selectedNode.riskScore >= 0.4 ? "text-amber-400" : "text-emerald-400"}`}>{selectedNode.riskScore.toFixed(2)} ({selectedNode.riskScore >= 0.7 ? "High" : selectedNode.riskScore >= 0.4 ? "Medium" : "Low"})</span></div>
               <div className="pt-1 border-t border-border">
-                <span className="text-xs font-mono text-muted-foreground">🔗 0x71C...a2E Verified</span>
+                <span className="text-xs font-mono text-muted-foreground">0x71C...a2E Verified</span>
               </div>
             </CardContent>
           </Card>
@@ -291,7 +291,7 @@ export default function Topology() {
           <div className="w-px h-8 bg-border"></div>
           <div>
             <div className="text-[10px] text-muted-foreground font-semibold uppercase tracking-wider">Ledger Sync</div>
-            <div className="font-semibold text-emerald-400 flex items-center gap-1">🔗 100%</div>
+            <div className="font-semibold text-emerald-400 flex items-center gap-1">100%</div>
           </div>
         </div>
       </div>

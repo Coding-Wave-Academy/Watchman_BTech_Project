@@ -182,28 +182,25 @@ export default function Dashboard() {
             <CardDescription>Immutable audit trail via Smart Contracts</CardDescription>
           </CardHeader>
           <CardContent className="space-y-0">
-            {[
-              { block: "#892144", label: "Policy Update Verified", time: "2m ago", color: "bg-emerald-400" },
-              { block: "#892143", label: "Intrusion Blocked (ML)", time: "5m ago", color: "bg-purple-400" },
-              { block: "#892142", label: "Admin Login Success", time: "12m ago", color: "bg-muted-foreground" },
-              { block: "#892141", label: "System Config Backup", time: "25m ago", color: "bg-muted-foreground" },
-              { block: "#892140", label: "Anomaly Detected (Heuristic)", time: "42m ago", color: "bg-red-400" },
-            ].map((item, i) => (
-              <div key={i} className="flex gap-3 py-3 border-b border-border last:border-0">
+            {alerts.length === 0 ? (
+              <div className="text-center text-muted-foreground py-8 text-sm">No verified logs yet.</div>
+            ) : (
+              alerts.slice(0, 5).map((alert, i) => (
+              <div key={alert.alert_id} className="flex gap-3 py-3 border-b border-border last:border-0">
                 <div className="flex flex-col items-center">
-                  <div className={`w-2.5 h-2.5 rounded-full ${item.color} mt-1`}></div>
-                  {i < 4 && <div className="w-px flex-1 bg-border mt-1"></div>}
+                  <div className={`w-2.5 h-2.5 rounded-full ${alert.confidence >= 90 ? 'bg-red-400' : alert.confidence >= 70 ? 'bg-amber-400' : 'bg-purple-400'} mt-1`}></div>
+                  {i < alerts.slice(0, 5).length - 1 && <div className="w-px flex-1 bg-border mt-1"></div>}
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center justify-between mb-0.5">
-                    <span className="text-[11px] font-mono text-muted-foreground">Block {item.block}</span>
-                    <span className="text-[10px] text-muted-foreground">{item.time}</span>
+                    <span className="text-[11px] font-mono text-muted-foreground">Block {alert.tx_hash ? `${alert.tx_hash.substring(0, 8)}...` : 'Pending'}</span>
+                    <span className="text-[10px] text-muted-foreground">{new Date(alert.timestamp).toLocaleTimeString()}</span>
                   </div>
-                  <div className="text-sm font-medium">{item.label}</div>
-                  <div className="text-[11px] font-mono text-muted-foreground mt-0.5 truncate">🔑 0x8f...2a1d</div>
+                  <div className="text-sm font-medium">{alert.attack_type || 'Anomaly'} Detected</div>
+                  <div className="text-[11px] font-mono text-muted-foreground mt-0.5 truncate">From: {alert.src_ip || 'Unknown'}</div>
                 </div>
               </div>
-            ))}
+            ))))}
             <div className="pt-3">
               <Link to="/ledger" className="flex items-center justify-center gap-1 text-sm text-primary hover:underline">
                 View All Transactions <ExternalLink className="h-3 w-3" />

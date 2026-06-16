@@ -16,8 +16,7 @@ export default function MainLayout() {
       {/* Sidebar */}
       <aside className="w-64 border-r border-border bg-card flex flex-col">
         <div className="h-16 flex items-center px-6 border-b border-border">
-          <Shield className="h-6 w-6 text-primary mr-2" />
-          <span className="font-bold text-lg tracking-tight">WatchMan</span>
+          <img src="/watchman-logo-dark.png" alt="WatchMan Logo" className="h-8" />
         </div>
         
         <div className="p-4 flex-1 overflow-y-auto">
@@ -52,7 +51,7 @@ export default function MainLayout() {
           <div className="flex-1"></div>
           <div className="flex items-center space-x-4">
             <span className="px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-500 text-xs font-semibold border border-emerald-500/20">
-              ● SYSTEM SECURE
+              SYSTEM SECURE
             </span>
             <button className="p-2 text-muted-foreground hover:text-foreground rounded-full hover:bg-secondary transition-colors">
               <Bell className="h-5 w-5" />
