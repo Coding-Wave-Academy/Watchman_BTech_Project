@@ -36,8 +36,11 @@ def _token_path() -> Path:
 
 def _read_token() -> str | None:
     path = _token_path()
-    return path.read_text(encoding="utf-8").strip() if path.exists() else None
-
+    try:
+        return path.read_text(encoding="utf-8").strip() if path.exists() else None
+    except PermissionError:
+        console.print("[yellow]Warning: Could not read authentication token due to permission denied. Some commands may fail. Try running with sudo.[/yellow]")
+        return None
 
 def _api(path: str, method: str = "GET", body: dict[str, Any] | None = None) -> dict[str, Any]:
     try:
@@ -74,6 +77,11 @@ def install(
 @app.command()
 def start() -> None:
     """Start the API server in the foreground."""
+    import os
+    if os.name == "posix" and getattr(os, "geteuid", lambda: 0)() != 0:
+        console.print("[red]Error: Root privileges required to start the daemon and capture packets. Use 'sudo watchman start'[/red]")
+        raise typer.Exit(1)
+        
     cfg = load_config()
     console.print(f"Starting WatchMan API on http://127.0.0.1:{cfg['api']['port']}")
     try:
