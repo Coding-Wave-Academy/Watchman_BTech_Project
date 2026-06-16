@@ -76,7 +76,7 @@ def _deep_merge(base: dict[str, Any], override: dict[str, Any]) -> dict[str, Any
 
 def load_config() -> dict[str, Any]:
     """Load config, migrating older flat config files into the PRD shape."""
-    DATA_DIR.mkdir(exist_ok=True)
+    DATA_DIR.mkdir(parents=True, exist_ok=True)
     if not CONFIG_PATH.exists():
         save_config(DEFAULT_CONFIG)
         return deepcopy(DEFAULT_CONFIG)
@@ -113,7 +113,7 @@ def load_config() -> dict[str, Any]:
 
 
 def save_config(config: dict[str, Any]) -> None:
-    DATA_DIR.mkdir(exist_ok=True)
+    DATA_DIR.mkdir(parents=True, exist_ok=True)
     CONFIG_PATH.write_text(json.dumps(config, indent=2), encoding="utf-8")
 
 

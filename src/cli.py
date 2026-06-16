@@ -29,7 +29,9 @@ def _api_base() -> str:
 
 
 def _token_path() -> Path:
-    return BASE_DIR / "data" / ".watchman_token"
+    from src.watchman_config import DATA_DIR
+    DATA_DIR.mkdir(parents=True, exist_ok=True)
+    return DATA_DIR / ".watchman_token"
 
 
 def _read_token() -> str | None:
