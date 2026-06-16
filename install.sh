@@ -55,7 +55,8 @@ echo "[5/7] Creating Default Admin Account..."
 # Run the installation command as the watchman user
 sudo -u watchman bash -c "source $INSTALL_DIR/.venv/bin/activate && watchman install"
 
-echo "[6/7] Setting up Systemd Service..."
+echo "[6/7] Setting up Systemd Service and CLI..."
+ln -sf /opt/watchman/app/.venv/bin/watchman /usr/local/bin/watchman
 cp watchman.service /etc/systemd/system/
 systemctl daemon-reload
 systemctl enable watchman.service
