@@ -1,32 +1,18 @@
 # Changelog
 
-## [1.0.1] - 2026-06-15
-### Added
-- Completed 10-phase Pre-GitHub Stabilization Audit.
-- Added comprehensive project health, build, static analysis, feature validation, and deployment readiness reports.
-- Root `.gitignore` to sanitize repository for Git publication.
-
-### Fixed
-- Fixed database initialisation bugs preventing proper path resolution (`os.PathLike` to string conversion).
-- Patched `watchman_config.py` migration script to prevent dictionary overwriting.
-- Fixed IPS module schema queries (`alerts` to `alerts_v2`) to accurately block/unblock IPs from the dashboard.
-- Remedied `WATCHMAN_IPS_CHAIN` unbound variable errors in `ips.py`.
-
-## [1.0.0] - 2026-06-09
-### Removed
-- Removed the Electron framework completely (`electron/` directory deleted).
-- Removed desktop packaging dependencies (`electron-builder`, `electron-packager`).
-- Removed Windows deployment workflow and desktop installers.
-- Eliminated Electron IPC loops and GUI-based packet capture controls.
+## [1.0.0] - Pre-Release Stabilization
 
 ### Added
-- CLI-first architecture using the `watchman` command for all operations.
-- Native Linux installer script (`install.sh`) and uninstaller (`uninstall.sh`).
-- Systemd integration (`watchman.service`) with `CAP_NET_RAW` permissions.
-- Python packaging support (`setup.py` and `pyproject.toml`).
-- Comprehensive deployment documentation (`INSTALLATION.md`, `DEPLOYMENT.md`, `SYSTEMD.md`, etc.).
-- Linux filesystem standardization (`/etc/watchman`, `/var/lib/watchman`, `/var/log/watchman`).
+- **Modern Landing Page**: Created `index.html` with a professional, aesthetic showcase of WatchMan's NIDS and Blockchain capabilities.
+- **Documentation Suite**: Added `SECURITY.md`, `FAQ.md`, and `TROUBLESHOOTING.md`.
+- **Dynamic Topology**: Implemented `GET /system/topology` to generate real-time network graphs based on packet capture data.
+- **Blockchain Ledger View**: Implemented `GET /system/ledger` to fetch real anchored alerts with Merkle roots.
+- **Historical Trends**: Implemented `GET /alerts/trends` for 24-hour attack trend visualization.
+
+### Changed
+- **Dashboard Theme**: Converted the entire React dashboard from a dark mode to a premium Light Mode theme (`index.css` overhaul).
+- **Typography**: Migrated all fonts to standard `Inter` Google Font for modern legibility.
+- **Backend Integrations**: Stripped all mock and fallback data from `Dashboard.tsx`, `Alerts.tsx`, `Topology.tsx`, and `Ledger.tsx`. Components now fetch live data natively.
 
 ### Fixed
-- Hardcoded Windows path logic replaced with dynamic Linux fallback handling.
-- Unified background threads to run smoothly inside a headless FastAPI daemon.
+- **Repository Bloat**: Purged `.venv/` and `node_modules/` from Git history, drastically reducing the repository footprint for push synchronization to GitHub.

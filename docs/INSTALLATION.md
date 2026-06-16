@@ -1,42 +1,62 @@
 # WatchMan Installation Guide
 
-WatchMan is designed to be installed on a fresh Ubuntu Server (20.04 or 22.04).
+Welcome to the WatchMan NIDS! This guide is written for complete beginners. If you've never used a Network Intrusion Detection System before, don't worry—we've automated the hard parts.
 
-## System Requirements
-- Ubuntu Server 20.04 or 22.04
-- 2GB+ RAM
-- Python 3.8+
-- Root (sudo) access
+## Prerequisites
 
-## Automated Installation
+Before you begin, ensure you have:
+* A machine running **Ubuntu 22.04 LTS** (or newer).
+* **Root/Sudo privileges** (WatchMan needs to interact with the firewall to block attacks).
+* Python 3.10+ installed.
+* At least 2GB of RAM and 2 CPU cores.
 
-The easiest way to install WatchMan is via the automated installation script.
+## Step 1: Download the Project
+
+First, download the WatchMan source code from our GitHub repository using `git`:
 
 ```bash
-git clone https://github.com/WatchMan/watchman-nids.git
-cd watchman-nids
+git clone https://github.com/Coding-Wave-Academy/Watchman_BTech_Project.git
+cd Watchman_BTech_Project
+```
+
+## Step 2: Run the Installer
+
+We have provided an automated script that handles the setup for you. This script will:
+1. Update your system packages.
+2. Install Python requirements (like FastAPI, Scikit-learn, Scapy).
+3. Install Node.js (for the dashboard and Ganache local blockchain).
+4. Create the `watchman` system service.
+
+Run the installer:
+
+```bash
 sudo ./install.sh
 ```
 
-### What `install.sh` Does:
-1. Installs Python dependencies (`python3-venv`, `python3-pip`).
-2. Creates standardized directories (`/etc/watchman`, `/var/log/watchman`, `/var/lib/watchman`).
-3. Creates a dedicated, non-root `watchman` user.
-4. Copies the project to `/opt/watchman/app` and creates a virtual environment.
-5. Installs WatchMan globally as a CLI tool.
-6. Initializes the database and creates the default admin user.
-7. Installs and starts the `watchman` systemd service.
+> [!NOTE]
+> The installer might take a few minutes as it downloads dependencies and sets up the virtual environment.
 
-## Post-Installation
+## Step 3: Verify the Installation
 
-Once installed, the CLI tool `watchman` is available globally.
+Once the installer finishes, check if the WatchMan Command Line Interface (CLI) is working:
 
-Verify the installation:
 ```bash
-watchman status
+watchman --help
 ```
 
-Start monitoring:
+You should see a list of available commands.
+
+## Step 4: Start the Service
+
+Start the WatchMan daemon in the background:
+
 ```bash
 watchman start
 ```
+
+Congratulations! WatchMan is now running on your system. It is actively monitoring your network interface and will block malicious IP addresses automatically.
+
+## Next Steps
+
+* Go to the **Dashboard** at `http://<your-server-ip>:8000/` to see live network stats.
+* Read the [CLI.md](CLI.md) guide to learn how to manage the system.

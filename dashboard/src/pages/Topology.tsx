@@ -22,23 +22,6 @@ interface Edge {
   to: string
 }
 
-const MOCK_NODES: Node[] = [
-  { id: "1", label: "fw-main-01", hostname: "fw-main-01", ip: "10.0.0.1", os: "pfSense", type: "server", status: "secure", riskScore: 0.05, x: 400, y: 100 },
-  { id: "2", label: "srv-web-01", hostname: "srv-web-01", ip: "192.168.1.10", os: "Ubuntu 22.04 LTS", type: "server", status: "secure", riskScore: 0.12, x: 200, y: 200 },
-  { id: "3", label: "srv-db-01", hostname: "srv-db-01", ip: "192.168.1.105", os: "Ubuntu 22.04 LTS", type: "server", status: "threat", riskScore: 0.92, x: 600, y: 180 },
-  { id: "4", label: "wks-admin", hostname: "wks-admin", ip: "192.168.1.50", os: "Windows 11", type: "workstation", status: "verified", riskScore: 0.08, x: 350, y: 300 },
-  { id: "5", label: "srv-app-01", hostname: "srv-app-01", ip: "192.168.1.20", os: "Ubuntu 22.04 LTS", type: "server", status: "suspicious", riskScore: 0.45, x: 500, y: 350 },
-  { id: "6", label: "iot-cam-01", hostname: "iot-cam-01", ip: "192.168.2.10", os: "Embedded Linux", type: "iot", status: "secure", riskScore: 0.15, x: 150, y: 400 },
-  { id: "7", label: "iot-sensor", hostname: "iot-sensor-03", ip: "192.168.2.20", os: "FreeRTOS", type: "iot", status: "suspicious", riskScore: 0.55, x: 550, y: 450 },
-  { id: "8", label: "wks-dev-02", hostname: "wks-dev-02", ip: "192.168.1.75", os: "macOS 14", type: "workstation", status: "verified", riskScore: 0.03, x: 650, y: 380 },
-]
-
-const MOCK_EDGES: Edge[] = [
-  { from: "1", to: "2" }, { from: "1", to: "3" }, { from: "1", to: "4" },
-  { from: "2", to: "4" }, { from: "3", to: "5" }, { from: "4", to: "5" },
-  { from: "5", to: "6" }, { from: "5", to: "7" }, { from: "3", to: "8" },
-]
-
 const STATUS_COLORS: Record<string, string> = {
   secure: "#10b981",
   suspicious: "#f59e0b",
@@ -50,11 +33,29 @@ const TYPE_FILTER = ["All Devices", "Servers", "Workstations", "IoT"] as const
 
 export default function Topology() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
-  const [selectedNode, setSelectedNode] = useState<Node | null>(MOCK_NODES[2])
+  const [nodes, setNodes] = useState<Node[]>([])
+  const [edges, setEdges] = useState<Edge[]>([])
+  const [selectedNode, setSelectedNode] = useState<Node | null>(null)
   const [filter, setFilter] = useState<typeof TYPE_FILTER[number]>("All Devices")
   const [zoom, setZoom] = useState(1)
 
-  const filteredNodes = MOCK_NODES.filter(n => {
+  const loadTopology = useCallback(async () => {
+    try {
+      const { fetchSystemTopology } = await import("@/lib/api")
+      const data = await fetchSystemTopology()
+      setNodes(data.nodes)
+      setEdges(data.edges)
+      if (data.nodes.length > 0 && !selectedNode) {
+        setSelectedNode(data.nodes[0])
+      }
+    } catch {
+      // Ignore
+    }
+  }, [])
+
+  useEffect(() => { loadTopology() }, [loadTopology])
+
+  const filteredNodes = nodes.filter(n => {
     if (filter === "All Devices") return true
     if (filter === "Servers") return n.type === "server"
     if (filter === "Workstations") return n.type === "workstation"
@@ -62,7 +63,7 @@ export default function Topology() {
     return true
   })
   const filteredIds = new Set(filteredNodes.map(n => n.id))
-  const filteredEdges = MOCK_EDGES.filter(e => filteredIds.has(e.from) && filteredIds.has(e.to))
+  const filteredEdges = edges.filter(e => filteredIds.has(e.from) && filteredIds.has(e.to))
 
   const draw = useCallback(() => {
     const canvas = canvasRef.current

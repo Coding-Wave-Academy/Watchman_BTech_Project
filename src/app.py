@@ -171,6 +171,11 @@ def update_alert_status(
     return db.get_alert(alert_id) or {"alert_id": alert_id, "status": payload.status}
 
 
+@app.get("/alerts/trends")
+def alert_trends(_: dict[str, Any] = Depends(current_user)) -> list[dict[str, Any]]:
+    return db.get_trends()
+
+
 @app.get("/system/status")
 def system_status(_: dict[str, Any] = Depends(current_user)) -> dict[str, Any]:
     return {
@@ -183,6 +188,18 @@ def system_status(_: dict[str, Any] = Depends(current_user)) -> dict[str, Any]:
             "last_error": anchor_service.last_error,
         },
     }
+
+@app.get("/system/ledger")
+def system_ledger(
+    limit: int = Query(50, ge=1, le=500),
+    offset: int = Query(0, ge=0),
+    _: dict[str, Any] = Depends(current_user)
+) -> dict[str, Any]:
+    return db.get_ledger(limit, offset)
+
+@app.get("/system/topology")
+def system_topology(_: dict[str, Any] = Depends(current_user)) -> dict[str, Any]:
+    return db.get_topology()
 
 
 @app.post("/system/start")

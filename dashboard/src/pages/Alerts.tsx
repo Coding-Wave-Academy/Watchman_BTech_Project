@@ -29,14 +29,7 @@ export default function Alerts() {
       const data = await fetchAlerts(50, attackType)
       setAlerts(data.alerts)
     } catch {
-      // use fallback mock data
-      setAlerts([
-        { alert_id: "1", timestamp: new Date().toISOString(), src_ip: "192.168.1.45", dst_ip: "/api/v1/auth", attack_type: "DDoS Attack", confidence: 98, status: "active" },
-        { alert_id: "2", timestamp: new Date().toISOString(), src_ip: "10.0.0.5", dst_ip: "/database/query", attack_type: "SQL Injection", confidence: 75, status: "active" },
-        { alert_id: "3", timestamp: new Date().toISOString(), src_ip: "45.33.22.11", dst_ip: "/uploads", attack_type: "Malware C2", confidence: 92, status: "active" },
-        { alert_id: "4", timestamp: new Date().toISOString(), src_ip: "172.16.0.2", dst_ip: ":8080", attack_type: "Port Scan", confidence: 60, status: "active" },
-        { alert_id: "5", timestamp: new Date().toISOString(), src_ip: "203.0.113.8", dst_ip: "/admin/login", attack_type: "Brute Force", confidence: 95, status: "active" },
-      ])
+      // Ignore
     } finally {
       setLoading(false)
     }

@@ -310,6 +310,108 @@ def get_state(key: str, default: Any = None) -> Any:
     return json.loads(row["value"]) if row else default
 
 
+def get_ledger(limit: int = 50, offset: int = 0) -> dict[str, Any]:
+    conn = connect()
+    rows = conn.execute(
+        """
+        SELECT timestamp, 'Alert Logged' as eventType, merkle_root as txHash, polygon_tx_hash, alert_id as height 
+        FROM alerts_v2 
+        WHERE anchor_status='confirmed' OR polygon_tx_hash IS NOT NULL
+        ORDER BY timestamp DESC
+        LIMIT ? OFFSET ?
+        """,
+        (limit, offset)
+    ).fetchall()
+    
+    total = conn.execute("SELECT COUNT(*) FROM alerts_v2 WHERE anchor_status='confirmed' OR polygon_tx_hash IS NOT NULL").fetchone()[0]
+    conn.close()
+    
+    blocks = []
+    for row in rows:
+        blocks.append({
+            "height": row["height"][:8],
+            "timestamp": row["timestamp"],
+            "eventType": "Alert Logged",
+            "txHash": row["polygon_tx_hash"] or row["txHash"] or "0x0",
+            "nodes": 12
+        })
+    return {"blocks": blocks, "total": total}
+
+def get_topology() -> dict[str, Any]:
+    conn = connect()
+    rows = conn.execute(
+        """
+        SELECT source_ip, destination_ip, status, confidence_score, attack_type
+        FROM alerts_v2
+        WHERE source_ip IS NOT NULL AND destination_ip IS NOT NULL
+        ORDER BY timestamp DESC LIMIT 500
+        """
+    ).fetchall()
+    conn.close()
+
+    nodes_map = {}
+    edges_map = set()
+
+    for row in rows:
+        src = row["source_ip"]
+        dst = row["destination_ip"]
+        edges_map.add((src, dst))
+
+        if src not in nodes_map:
+            nodes_map[src] = {
+                "id": src, "label": src, "hostname": src, "ip": src,
+                "os": "Unknown", "type": "iot" if src.startswith("192.168.2.") else "workstation",
+                "status": row["status"] if row["status"] in ["blocked", "threat"] else "suspicious" if row["confidence_score"] > 0.5 else "secure",
+                "riskScore": row["confidence_score"],
+                "x": hash(src) % 600 + 100, "y": hash(src + "y") % 400 + 100
+            }
+        else:
+            if row["confidence_score"] > nodes_map[src]["riskScore"]:
+                nodes_map[src]["riskScore"] = row["confidence_score"]
+
+        if dst not in nodes_map:
+            nodes_map[dst] = {
+                "id": dst, "label": dst, "hostname": dst, "ip": dst,
+                "os": "Unknown", "type": "server",
+                "status": "secure", "riskScore": 0,
+                "x": hash(dst) % 600 + 100, "y": hash(dst + "y") % 400 + 100
+            }
+
+    # Add default central node if empty
+    if not nodes_map:
+        nodes_map["10.0.0.1"] = {
+            "id": "10.0.0.1", "label": "fw-main-01", "hostname": "fw-main-01", "ip": "10.0.0.1",
+            "os": "pfSense", "type": "server", "status": "secure", "riskScore": 0.05, "x": 400, "y": 200
+        }
+
+    return {
+        "nodes": list(nodes_map.values()),
+        "edges": [{"from": src, "to": dst} for src, dst in edges_map]
+    }
+
+def get_trends() -> list[dict[str, Any]]:
+    conn = connect()
+    rows = conn.execute(
+        """
+        SELECT strftime('%H:00', timestamp) as time, COUNT(*) as attacks
+        FROM alerts_v2
+        WHERE timestamp >= datetime('now', '-24 hours')
+        GROUP BY time
+        ORDER BY time ASC
+        """
+    ).fetchall()
+    conn.close()
+    
+    if not rows:
+        return [
+            {"time": "00:00", "attacks": 0},
+            {"time": "06:00", "attacks": 0},
+            {"time": "12:00", "attacks": 0},
+            {"time": "18:00", "attacks": 0},
+            {"time": "23:59", "attacks": 0},
+        ]
+    return [{"time": r["time"], "attacks": r["attacks"]} for r in rows]
+
 def _decode_alert(row: dict[str, Any]) -> dict[str, Any]:
     proof = row.get("merkle_proof")
     row["merkle_proof"] = json.loads(proof) if proof else []

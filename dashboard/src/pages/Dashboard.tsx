@@ -5,18 +5,8 @@ import { Button } from "@/components/ui/button"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
 import { Activity, ShieldAlert, Zap, TrendingUp, ExternalLink } from "lucide-react"
-import { fetchAlerts, fetchAlertStats, fetchSystemStatus, connectAlertStream, type Alert } from "@/lib/api"
+import { fetchAlerts, fetchAlertStats, fetchSystemStatus, fetchAlertTrends, connectAlertStream, type Alert } from "@/lib/api"
 import { Link } from "react-router-dom"
-
-const FALLBACK_CHART_DATA = [
-  { time: '00:00', attacks: 12 }, { time: '02:00', attacks: 8 },
-  { time: '04:00', attacks: 5 },  { time: '06:00', attacks: 15 },
-  { time: '08:00', attacks: 32 }, { time: '10:00', attacks: 45 },
-  { time: '12:00', attacks: 60 }, { time: '14:00', attacks: 38 },
-  { time: '16:00', attacks: 22 }, { time: '18:00', attacks: 30 },
-  { time: '20:00', attacks: 18 }, { time: '22:00', attacks: 10 },
-  { time: '23:59', attacks: 14 },
-]
 
 function severityColor(confidence: number) {
   if (confidence >= 90) return "destructive"
@@ -34,21 +24,23 @@ export default function Dashboard() {
   const [alerts, setAlerts] = useState<Alert[]>([])
   const [stats, setStats] = useState<Record<string, unknown>>({})
   const [systemStatus, setSystemStatus] = useState<Record<string, unknown>>({})
-  const [chartData] = useState(FALLBACK_CHART_DATA)
+  const [chartData, setChartData] = useState<any[]>([])
   const [live, setLive] = useState(false)
 
   const loadData = useCallback(async () => {
     try {
-      const [alertRes, statsRes, sysRes] = await Promise.allSettled([
+      const [alertRes, statsRes, sysRes, trendsRes] = await Promise.allSettled([
         fetchAlerts(5),
         fetchAlertStats(),
         fetchSystemStatus(),
+        fetchAlertTrends(),
       ])
       if (alertRes.status === "fulfilled") setAlerts(alertRes.value.alerts)
       if (statsRes.status === "fulfilled") setStats(statsRes.value)
       if (sysRes.status === "fulfilled") setSystemStatus(sysRes.value)
+      if (trendsRes.status === "fulfilled") setChartData(trendsRes.value)
     } catch {
-      // use fallback data
+      // Ignore
     }
   }, [])
 
@@ -244,11 +236,14 @@ export default function Dashboard() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {(alerts.length > 0 ? alerts : [
-                { alert_id: "1", src_ip: "192.168.1.45", dst_ip: "/api/v1/auth", confidence: 98, attack_type: "DDoS", status: "blocked", timestamp: "" },
-                { alert_id: "2", src_ip: "10.0.4.12", dst_ip: "/database/query", confidence: 85, attack_type: "SQL Injection", status: "flagged", timestamp: "" },
-                { alert_id: "3", src_ip: "172.16.0.99", dst_ip: "/admin/settings", confidence: 62, attack_type: "Brute Force", status: "monitoring", timestamp: "" },
-              ]).slice(0, 5).map((a) => (
+              {alerts.length === 0 ? (
+                <TableRow>
+                  <TableCell colSpan={5} className="text-center text-muted-foreground py-8">
+                    No active threats detected.
+                  </TableCell>
+                </TableRow>
+              ) : (
+                alerts.slice(0, 5).map((a) => (
                 <TableRow key={a.alert_id}>
                   <TableCell className="font-mono text-sm">{a.src_ip}</TableCell>
                   <TableCell className="text-muted-foreground">{a.dst_ip}</TableCell>
@@ -267,7 +262,7 @@ export default function Dashboard() {
                   </TableCell>
                   <TableCell className="capitalize text-sm">{a.status || "Blocked"}</TableCell>
                 </TableRow>
-              ))}
+              )))}
             </TableBody>
           </Table>
         </CardContent>

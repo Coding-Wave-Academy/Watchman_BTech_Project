@@ -3,26 +3,28 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Blocks, Clock, CheckCircle2, ChevronLeft, ChevronRight, Filter } from "lucide-react"
-import { useState } from "react"
-
-const EVENT_TYPES = ["Alert Logged", "Policy Updated", "Model Retrained"] as const
-
-const MOCK_BLOCKS = Array.from({ length: 50 }, (_, i) => ({
-  height: 1284902 - i,
-  timestamp: new Date(Date.now() - i * 90000).toLocaleString("en-US", { month: "short", day: "numeric", year: "numeric", hour: "2-digit", minute: "2-digit", second: "2-digit" }),
-  eventType: EVENT_TYPES[i % 3],
-  txHash: `0x${Math.random().toString(16).slice(2, 6)}...${Math.random().toString(16).slice(2, 6)}`,
-  nodes: i % 3 === 2 ? 10 : 12,
-}))
+import { useState, useEffect, useCallback } from "react"
+import { fetchSystemLedger } from "@/lib/api"
 
 export default function Ledger() {
   const [page, setPage] = useState(0)
   const pageSize = 7
-  const totalPages = Math.ceil(MOCK_BLOCKS.length / pageSize)
-  const pageBlocks = MOCK_BLOCKS.slice(page * pageSize, (page + 1) * pageSize)
+  const [blocks, setBlocks] = useState<any[]>([])
+  const [totalBlocks, setTotalBlocks] = useState(0)
+  
+  const loadLedger = useCallback(async () => {
+    try {
+      const data = await fetchSystemLedger(pageSize, page * pageSize)
+      setBlocks(data.blocks)
+      setTotalBlocks(data.total)
+    } catch {
+      // Ignore
+    }
+  }, [page])
 
-  return (
-    <div className="space-y-6">
+  useEffect(() => { loadLedger() }, [loadLedger])
+  
+  const totalPages = Math.ceil(totalBlocks / pageSize) || 1
       {/* Header */}
       <div className="flex items-start justify-between">
         <div>
@@ -43,7 +45,7 @@ export default function Ledger() {
           </CardHeader>
           <CardContent>
             <div className="flex items-end gap-2">
-              <span className="text-3xl font-bold">1,284,902</span>
+              <span className="text-3xl font-bold">{totalBlocks.toLocaleString()}</span>
               <Badge variant="outline" className="text-emerald-400 border-emerald-400/30 text-[10px] mb-1">~12.4%</Badge>
             </div>
           </CardContent>
@@ -76,7 +78,7 @@ export default function Ledger() {
         <CardHeader className="flex flex-row items-center justify-between">
           <div>
             <CardTitle className="text-lg">Chronological Ledger</CardTitle>
-            <CardDescription>Showing last 50 entries</CardDescription>
+            <CardDescription>Showing verified alerts and policy updates</CardDescription>
           </div>
         </CardHeader>
         <CardContent className="p-0">
@@ -91,12 +93,19 @@ export default function Ledger() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {pageBlocks.map((block) => (
+              {blocks.length === 0 ? (
+                <TableRow>
+                  <TableCell colSpan={5} className="text-center text-muted-foreground py-8">
+                    No verified blocks found.
+                  </TableCell>
+                </TableRow>
+              ) : (
+              blocks.map((block) => (
                 <TableRow key={block.height} className="border-border h-14">
                   <TableCell className="pl-6">
-                    <span className="font-mono font-semibold text-primary">#{block.height.toLocaleString()}</span>
+                    <span className="font-mono font-semibold text-primary">#{block.height}</span>
                   </TableCell>
-                  <TableCell className="text-muted-foreground text-sm">{block.timestamp}</TableCell>
+                  <TableCell className="text-muted-foreground text-sm">{new Date(block.timestamp).toLocaleString()}</TableCell>
                   <TableCell>
                     <Badge
                       variant={block.eventType === "Alert Logged" ? "destructive" : block.eventType === "Policy Updated" ? "default" : "secondary"}
@@ -106,7 +115,9 @@ export default function Ledger() {
                     </Badge>
                   </TableCell>
                   <TableCell>
-                    <code className="text-xs text-muted-foreground bg-secondary/50 px-2 py-1 rounded">{block.txHash}</code>
+                    <code className="text-xs text-muted-foreground bg-secondary/50 px-2 py-1 rounded">
+                      {block.txHash.length > 20 ? `${block.txHash.slice(0, 8)}...${block.txHash.slice(-8)}` : block.txHash}
+                    </code>
                   </TableCell>
                   <TableCell>
                     <div className="flex items-center gap-1.5 text-sm">
@@ -115,7 +126,7 @@ export default function Ledger() {
                     </div>
                   </TableCell>
                 </TableRow>
-              ))}
+              )))}
             </TableBody>
           </Table>
 
