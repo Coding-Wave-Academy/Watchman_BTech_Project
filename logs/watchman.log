@@ -25,3 +25,17 @@
 [2026-06-16 00:33:28] [INFO] [ips] 
 IPS module test complete.
 
+[2026-06-16 03:45:20] [INFO] [predict] Loading models...
+[2026-06-16 03:45:58] [INFO] [predict] Random Forest    : loaded (100 trees)
+[2026-06-16 03:45:58] [INFO] [predict] Isolation Forest : loaded
+[2026-06-16 03:45:58] [INFO] [predict] Label classes    : ['Anomaly', 'BruteForce', 'DoS', 'Normal', 'PortScan']
+[2026-06-16 03:45:58] [INFO] [predict] Starting live capture...
+[2026-06-16 03:45:58] [INFO] [predict] Interface : default
+[2026-06-16 03:46:34] [WARNING] [predict] [ALERT] 2026-06-16T02:46:34.507483 | Type: Anomaly (HIGH) | From: 192.168.81.167:64371 -> 195.128.248.23:85 | Packets: 6 | RF Conf: 80.00% | Note: RF low confidence=0.80
+[2026-06-16 03:46:38] [WARNING] [predict] [ALERT] 2026-06-16T02:46:38.056188 | Type: Anomaly (HIGH) | From: 216.239.32.223:443 -> 192.168.81.167:54789 | Packets: 35 | RF Conf: 81.00% | Note: RF low confidence=0.81
+[2026-06-16 03:46:45] [WARNING] [predict] [ALERT] 2026-06-16T02:46:45.252707 | Type: Anomaly (HIGH) | From: 192.168.81.167:49335 -> 192.168.81.28:53 | Packets: 3 | RF Conf: 83.00% | Note: RF low confidence=0.83
+[2026-06-16 03:47:05] [WARNING] [predict] [ALERT] 2026-06-16T02:47:05.054728 | Type: Anomaly (HIGH) | From: 192.168.81.167:64371 -> 195.128.248.23:85 | Packets: 19 | RF Conf: 80.00% | Note: RF low confidence=0.80
+[2026-06-16 03:47:16] [WARNING] [predict] [ALERT] 2026-06-16T02:47:16.603378 | Type: Anomaly (HIGH) | From: 192.168.81.167:61696 -> 108.139.200.76:443 | Packets: 15 | RF Conf: 80.00% | Note: RF low confidence=0.80
+[2026-06-16 03:47:26] [WARNING] [predict] [ALERT] 2026-06-16T02:47:26.014297 | Type: Anomaly (HIGH) | From: 192.168.81.167:61729 -> 216.239.38.223:443 | Packets: 15 | RF Conf: 84.00% | Note: RF low confidence=0.84
+[2026-06-16 03:47:26] [WARNING] [predict] [ALERT] 2026-06-16T02:47:26.540796 | Type: Anomaly (HIGH) | From: 216.239.38.223:443 -> 192.168.81.167:61729 | Packets: 18 | RF Conf: 79.00% | Note: RF low confidence=0.79
+[2026-06-16 03:47:26] [WARNING] [predict] [ALERT] 2026-06-16T02:47:26.739983 | Type: Anomaly (HIGH) | From: 192.168.81.167:49335 -> 192.168.81.28:53 | Packets: 3 | RF Conf: 80.00% | Note: RF low confidence=0.80

@@ -138,7 +138,7 @@ def unblock_ip(ip: str) -> dict:
 def get_blocked_ips() -> list:
     """Return all currently blocked IPs from DB."""
     try:
-        import db
+        from src import db
         conn = db.connect()
         rows = conn.execute(
             'SELECT * FROM blocked_ips ORDER BY id DESC'
@@ -215,7 +215,7 @@ def _iptables_unblock(ip: str) -> dict:
 
 def _record_block(ip: str, reason: str, blocked_by: str):
     try:
-        import db
+        from src import db
         conn = db.connect()
         conn.execute('''
             INSERT OR REPLACE INTO blocked_ips
@@ -238,7 +238,7 @@ def _record_block(ip: str, reason: str, blocked_by: str):
 
 def _record_unblock(ip: str):
     try:
-        import db
+        from src import db
         conn = db.connect()
         conn.execute('DELETE FROM blocked_ips WHERE ip = ?', (ip,))
         conn.execute(
@@ -252,7 +252,7 @@ def _record_unblock(ip: str):
 
 def _is_blocked(ip: str) -> bool:
     try:
-        import db
+        from src import db
         conn  = db.connect()
         count = conn.execute(
             'SELECT COUNT(*) FROM blocked_ips WHERE ip = ?', (ip,)

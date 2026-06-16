@@ -25,6 +25,9 @@ mkdir -p /etc/watchman
 mkdir -p /var/log/watchman
 mkdir -p /var/lib/watchman
 mkdir -p /opt/watchman/models
+if [ -d "models" ]; then
+    cp -r models/* /opt/watchman/models/ || true
+fi
 mkdir -p /tmp/watchman
 
 # Create dedicated user

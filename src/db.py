@@ -162,7 +162,7 @@ def get_user(username: str) -> dict[str, Any] | None:
 
 
 def insert_alert(alert: dict[str, Any]) -> dict[str, Any]:
-    from merkle import canonical_alert_hash
+    from src.merkle import canonical_alert_hash
 
     alert_id = alert.get("alert_id") or str(uuid.uuid4())
     record = {

@@ -163,7 +163,7 @@ def update_alert_status(
 
     source_ip = alert.get("source_ip")
     if source_ip:
-        import ips
+        from src import ips
         if payload.status == "blocked":
             ips.block_ip(source_ip, reason=f"Alert {alert_id} marked as blocked", blocked_by="admin")
         elif payload.status == "active" and alert.get("status") == "blocked":

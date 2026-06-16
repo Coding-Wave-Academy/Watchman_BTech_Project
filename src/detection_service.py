@@ -62,7 +62,7 @@ class DetectionService:
 
     def _load_models(self) -> None:
         try:
-            import predict
+            from src import predict
 
             rf, iso, le = predict.load_models(str(MODELS_DIR))
             self._models = (rf, iso, le)
@@ -75,7 +75,7 @@ class DetectionService:
         try:
             if not self._models:
                 return
-            import predict
+            from src import predict
 
             rf, iso, le = self._models
             predict.FLOW_TIMEOUT = int(self.config["capture"]["flow_timeout_seconds"])
@@ -99,7 +99,7 @@ class DetectionService:
         if features_path.exists():
             return
         try:
-            import predict
+            from src import predict
 
             features = list(predict.extract_features(
                 ("0.0.0.0", "0.0.0.0", 0, 0, 6),
