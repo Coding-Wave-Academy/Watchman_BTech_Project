@@ -30,6 +30,7 @@ async def lifespan(app: FastAPI):
     db.init_db()
     auth.bootstrap_admin()
     anchor_service.start()
+    detection_service.start()
     yield
     detection_service.stop()
     anchor_service.stop()
