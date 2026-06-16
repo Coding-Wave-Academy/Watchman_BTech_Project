@@ -1,0 +1,19 @@
+RANDOM FOREST — CLASSIFICATION REPORT
+Evaluated on real unseen test data (no synthetic samples)
+=======================================================
+Accuracy  : 99.88%
+Precision : 99.90%
+Recall    : 99.88%
+F1-Score  : 99.89%
+
+              precision    recall  f1-score   support
+
+     Anomaly       0.63      0.96      0.76       401
+  BruteForce       1.00      1.00      1.00      2766
+         DoS       1.00      1.00      1.00     75947
+      Normal       1.00      1.00      1.00    454265
+    PortScan       0.99      1.00      1.00     31761
+
+    accuracy                           1.00    565140
+   macro avg       0.92      0.99      0.95    565140
+weighted avg       1.00      1.00      1.00    565140

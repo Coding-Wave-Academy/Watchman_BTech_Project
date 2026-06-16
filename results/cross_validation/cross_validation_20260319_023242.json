@@ -1,0 +1,179 @@
+[
+  {
+    "dataset": "CICIDS2017 (baseline)",
+    "samples": 565140,
+    "features": 78,
+    "classes": [
+      "Normal",
+      "DoS",
+      "BruteForce",
+      "PortScan",
+      "Anomaly"
+    ],
+    "mean_accuracy": 0.9988,
+    "mean_f1": 0.9989,
+    "std_f1": 0.0,
+    "mean_precision": 0.999,
+    "mean_recall": 0.9988,
+    "note": "From training \u2014 not cross-validated (in-distribution)"
+  },
+  {
+    "dataset": "NSL-KDD",
+    "samples": 50000,
+    "features": 122,
+    "classes": [
+      "Anomaly",
+      "BruteForce",
+      "DoS",
+      "Normal",
+      "PortScan"
+    ],
+    "folds": 3,
+    "mean_accuracy": 0.9978,
+    "mean_f1": 0.9977,
+    "std_f1": 0.0004,
+    "mean_precision": 0.9976,
+    "mean_recall": 0.9978,
+    "per_class": {
+      "Anomaly": {
+        "precision": 0.6667,
+        "recall": 0.2,
+        "f1": 0.3077,
+        "support": 20
+      },
+      "BruteForce": {
+        "precision": 0.9848,
+        "recall": 0.9284,
+        "f1": 0.9558,
+        "support": 419
+      },
+      "DoS": {
+        "precision": 0.9998,
+        "recall": 0.9994,
+        "f1": 0.9996,
+        "support": 18320
+      },
+      "Normal": {
+        "precision": 0.9967,
+        "recall": 0.9994,
+        "f1": 0.998,
+        "support": 26604
+      },
+      "PortScan": {
+        "precision": 0.9983,
+        "recall": 0.9927,
+        "f1": 0.9955,
+        "support": 4637
+      }
+    },
+    "fold_results": [
+      {
+        "fold": 1,
+        "acc": 0.997780044399112,
+        "f1": 0.9975501432026225,
+        "precision": 0.9973494040800042,
+        "recall": 0.997780044399112
+      },
+      {
+        "fold": 2,
+        "acc": 0.998320033599328,
+        "f1": 0.9982445169238894,
+        "precision": 0.9982393945618765,
+        "recall": 0.998320033599328
+      },
+      {
+        "fold": 3,
+        "acc": 0.9974198967958718,
+        "f1": 0.9973581815044358,
+        "precision": 0.9973595586946564,
+        "recall": 0.9974198967958718
+      }
+    ],
+    "iso_forest": {
+      "precision": 0.9393,
+      "recall": 0.8696,
+      "f1": 0.9031,
+      "false_pos_rate": 0.0528,
+      "tp": 4348,
+      "fp": 281,
+      "tn": 5040,
+      "fn": 652
+    }
+  },
+  {
+    "dataset": "UNSW-NB15",
+    "samples": 50000,
+    "features": 190,
+    "classes": [
+      "Anomaly",
+      "DoS",
+      "Normal",
+      "PortScan"
+    ],
+    "folds": 3,
+    "mean_accuracy": 0.8967,
+    "mean_f1": 0.9013,
+    "std_f1": 0.001,
+    "mean_precision": 0.9092,
+    "mean_recall": 0.8967,
+    "per_class": {
+      "Anomaly": {
+        "precision": 0.9217,
+        "recall": 0.8606,
+        "f1": 0.8901,
+        "support": 22677
+      },
+      "DoS": {
+        "precision": 0.386,
+        "recall": 0.5768,
+        "f1": 0.4625,
+        "support": 2481
+      },
+      "Normal": {
+        "precision": 0.9568,
+        "recall": 0.9803,
+        "f1": 0.9684,
+        "support": 22708
+      },
+      "PortScan": {
+        "precision": 0.8772,
+        "recall": 0.7629,
+        "f1": 0.816,
+        "support": 2134
+      }
+    },
+    "fold_results": [
+      {
+        "fold": 1,
+        "acc": 0.8975220495590088,
+        "f1": 0.9019910788695503,
+        "precision": 0.9096352842789556,
+        "recall": 0.8975220495590088
+      },
+      {
+        "fold": 2,
+        "acc": 0.8946421071578569,
+        "f1": 0.899867222348016,
+        "precision": 0.9091309804374483,
+        "recall": 0.8946421071578569
+      },
+      {
+        "fold": 3,
+        "acc": 0.8978759150366015,
+        "f1": 0.9019888716213447,
+        "precision": 0.9089577547038346,
+        "recall": 0.8978759150366015
+      }
+    ],
+    "iso_forest": {
+      "precision": 0.8833,
+      "recall": 0.3738,
+      "f1": 0.5253,
+      "false_pos_rate": 0.0544,
+      "tp": 1869,
+      "fp": 247,
+      "tn": 4295,
+      "fn": 3131
+    }
+  }
+]

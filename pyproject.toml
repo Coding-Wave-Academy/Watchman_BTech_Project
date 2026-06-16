@@ -1,0 +1,15 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "watchman-nids"
+version = "1.0.0"
+description = "WatchMan Network Intrusion Detection System"
+authors = [
+    {name = "Ribert Kandi Junior"}
+]
+dependencies = []
+
+[project.scripts]
+watchman = "src.cli:app"

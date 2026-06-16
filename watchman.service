@@ -1,0 +1,20 @@
+[Unit]
+Description=WatchMan Network Intrusion Detection System
+After=network.target
+
+[Service]
+Type=simple
+User=watchman
+Group=watchman
+WorkingDirectory=/opt/watchman/app
+Environment="PATH=/opt/watchman/app/.venv/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+ExecStart=/opt/watchman/app/.venv/bin/python src/app.py
+Restart=on-failure
+RestartSec=5
+StandardOutput=append:/var/log/watchman/watchman.log
+StandardError=append:/var/log/watchman/watchman.error.log
+# Packet capture requires network admin capabilities
+AmbientCapabilities=CAP_NET_RAW CAP_NET_ADMIN
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,147 @@
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { Blocks, Clock, CheckCircle2, ChevronLeft, ChevronRight, Filter } from "lucide-react"
+import { useState } from "react"
+
+const EVENT_TYPES = ["Alert Logged", "Policy Updated", "Model Retrained"] as const
+
+const MOCK_BLOCKS = Array.from({ length: 50 }, (_, i) => ({
+  height: 1284902 - i,
+  timestamp: new Date(Date.now() - i * 90000).toLocaleString("en-US", { month: "short", day: "numeric", year: "numeric", hour: "2-digit", minute: "2-digit", second: "2-digit" }),
+  eventType: EVENT_TYPES[i % 3],
+  txHash: `0x${Math.random().toString(16).slice(2, 6)}...${Math.random().toString(16).slice(2, 6)}`,
+  nodes: i % 3 === 2 ? 10 : 12,
+}))
+
+export default function Ledger() {
+  const [page, setPage] = useState(0)
+  const pageSize = 7
+  const totalPages = Math.ceil(MOCK_BLOCKS.length / pageSize)
+  const pageBlocks = MOCK_BLOCKS.slice(page * pageSize, (page + 1) * pageSize)
+
+  return (
+    <div className="space-y-6">
+      {/* Header */}
+      <div className="flex items-start justify-between">
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight">Blockchain Ledger</h1>
+          <p className="text-muted-foreground mt-1">Immutable security event tracking & verification</p>
+        </div>
+        <Button variant="outline" size="sm" className="gap-1.5">
+          <Filter className="h-4 w-4" /> Filter
+        </Button>
+      </div>
+
+      {/* KPI Row */}
+      <div className="grid gap-4 md:grid-cols-3">
+        <Card className="glass-panel">
+          <CardHeader className="flex flex-row items-center justify-between pb-2">
+            <CardTitle className="text-sm font-medium text-muted-foreground">TOTAL BLOCKS</CardTitle>
+            <Blocks className="h-5 w-5 text-blue-400" />
+          </CardHeader>
+          <CardContent>
+            <div className="flex items-end gap-2">
+              <span className="text-3xl font-bold">1,284,902</span>
+              <Badge variant="outline" className="text-emerald-400 border-emerald-400/30 text-[10px] mb-1">~12.4%</Badge>
+            </div>
+          </CardContent>
+        </Card>
+        <Card className="glass-panel">
+          <CardHeader className="flex flex-row items-center justify-between pb-2">
+            <CardTitle className="text-sm font-medium text-muted-foreground">LAST BLOCK TIME</CardTitle>
+            <Clock className="h-5 w-5 text-blue-400" />
+          </CardHeader>
+          <CardContent>
+            <span className="text-3xl font-bold">2s ago</span>
+          </CardContent>
+        </Card>
+        <Card className="glass-panel border-primary/20">
+          <CardHeader className="flex flex-row items-center justify-between pb-2">
+            <CardTitle className="text-sm font-medium text-muted-foreground">NODE SYNC STATUS</CardTitle>
+            <CheckCircle2 className="h-5 w-5 text-emerald-400" />
+          </CardHeader>
+          <CardContent>
+            <div className="flex items-end gap-2">
+              <span className="text-3xl font-bold">100%</span>
+              <Badge variant="outline" className="mb-1 border-emerald-400/30 text-emerald-400 text-[10px]">Synced</Badge>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Chronological Ledger Table */}
+      <Card className="glass-panel border-border">
+        <CardHeader className="flex flex-row items-center justify-between">
+          <div>
+            <CardTitle className="text-lg">Chronological Ledger</CardTitle>
+            <CardDescription>Showing last 50 entries</CardDescription>
+          </div>
+        </CardHeader>
+        <CardContent className="p-0">
+          <Table>
+            <TableHeader>
+              <TableRow className="hover:bg-transparent border-border">
+                <TableHead className="text-xs uppercase tracking-wider pl-6">Block Height</TableHead>
+                <TableHead className="text-xs uppercase tracking-wider">Timestamp</TableHead>
+                <TableHead className="text-xs uppercase tracking-wider">Event Type</TableHead>
+                <TableHead className="text-xs uppercase tracking-wider">Transaction Hash</TableHead>
+                <TableHead className="text-xs uppercase tracking-wider">Verification Status</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {pageBlocks.map((block) => (
+                <TableRow key={block.height} className="border-border h-14">
+                  <TableCell className="pl-6">
+                    <span className="font-mono font-semibold text-primary">#{block.height.toLocaleString()}</span>
+                  </TableCell>
+                  <TableCell className="text-muted-foreground text-sm">{block.timestamp}</TableCell>
+                  <TableCell>
+                    <Badge
+                      variant={block.eventType === "Alert Logged" ? "destructive" : block.eventType === "Policy Updated" ? "default" : "secondary"}
+                      className={`text-xs ${block.eventType === "Policy Updated" ? "bg-blue-600" : block.eventType === "Model Retrained" ? "bg-purple-600" : ""}`}
+                    >
+                      {block.eventType}
+                    </Badge>
+                  </TableCell>
+                  <TableCell>
+                    <code className="text-xs text-muted-foreground bg-secondary/50 px-2 py-1 rounded">{block.txHash}</code>
+                  </TableCell>
+                  <TableCell>
+                    <div className="flex items-center gap-1.5 text-sm">
+                      <span className={`w-2 h-2 rounded-full ${block.nodes >= 12 ? "bg-emerald-400" : "bg-amber-400"}`}></span>
+                      Validated by {block.nodes} nodes
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+
+          {/* Pagination */}
+          <div className="flex items-center justify-between px-6 py-3 border-t border-border">
+            <div className="flex items-center gap-2">
+              <Button variant="outline" size="icon" className="h-8 w-8" disabled={page === 0} onClick={() => setPage(p => p - 1)}>
+                <ChevronLeft className="h-4 w-4" />
+              </Button>
+              <Button variant="outline" size="icon" className="h-8 w-8" disabled={page >= totalPages - 1} onClick={() => setPage(p => p + 1)}>
+                <ChevronRight className="h-4 w-4" />
+              </Button>
+            </div>
+            <span className="text-sm text-muted-foreground">Page {page + 1} of {totalPages.toLocaleString()}</span>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Bottom Status Bar */}
+      <div className="fixed bottom-0 left-64 right-0 border-t border-border bg-card/80 backdrop-blur-md px-6 py-2 flex items-center justify-center gap-4 text-[11px] font-mono text-muted-foreground tracking-wider z-10">
+        <span>NODE_HASH_A823B</span>
+        <span>·</span>
+        <span>SECURITY_PROTOCOL_V4.2</span>
+        <span>·</span>
+        <span>WATCHMAN_CORE_LEDGER</span>
+      </div>
+    </div>
+  )
+}

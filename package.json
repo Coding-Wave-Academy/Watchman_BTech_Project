@@ -1,0 +1,22 @@
+{
+  "name": "watchman-nids",
+  "version": "1.0.0",
+  "description": "WatchMan Network Intrusion Detection System",
+  "scripts": {
+    "setup:python": "python -m venv .venv && .venv\\Scripts\\python.exe -m pip install -r requirements.txt",
+    "test:python": ".venv\\Scripts\\python.exe -m pytest -q",
+    "ganache": "ganache --port 7545 --mnemonic \"candy maple cake sugar pudding cream honey rich smooth crumble sweet treat\" --chain.chainId 1337"
+  },
+  "dependencies": {
+    "@ganache/cli": "^0.10.2",
+    "ganache": "^7.9.2"
+  },
+  "keywords": [
+    "nids",
+    "security",
+    "blockchain",
+    "ml"
+  ],
+  "author": "WatchMan Team",
+  "license": "MIT"
+}

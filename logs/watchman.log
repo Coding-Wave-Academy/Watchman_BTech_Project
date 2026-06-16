@@ -1,0 +1,27 @@
+[2026-06-16 00:33:28] [INFO] [ips] 
+==================================================
+[2026-06-16 00:33:28] [INFO] [ips]   WatchMan IPS — Module Test
+[2026-06-16 00:33:28] [INFO] [ips]   Mode: SIMULATE
+[2026-06-16 00:33:28] [INFO] [ips] ==================================================
+[2026-06-16 00:33:28] [INFO] [ips] 
+[TEST 1] Blocking 192.168.1.99...
+[2026-06-16 00:33:28] [INFO] [ips] [IPS:SIM] Would run: iptables -I WATCHMAN_IPS -s 192.168.1.99 -j DROP
+[2026-06-16 00:33:28] [WARNING] [ips] [IPS] BLOCKED 192.168.1.99 | reason=Test block | mode=simulate
+[2026-06-16 00:33:28] [INFO] [ips]   Result: {'success': True, 'ip': '192.168.1.99', 'reason': 'Test block', 'mode': 'simulate', 'iptables': {'simulated': True, 'command': 'iptables -I WATCHMAN_IPS -s 192.168.1.99 -j DROP'}}
+[2026-06-16 00:33:28] [INFO] [ips] 
+[TEST 2] Double-blocking same IP...
+[2026-06-16 00:33:28] [INFO] [ips]   Result: {'success': True, 'already_blocked': True, 'ip': '192.168.1.99'}
+[2026-06-16 00:33:28] [INFO] [ips] 
+[TEST 3] Listing blocked IPs...
+[2026-06-16 00:33:28] [INFO] [ips]   192.168.1.99 — Test block — 2026-06-15T23:33:28.572802+00:00
+[2026-06-16 00:33:28] [INFO] [ips] 
+[TEST 4] Active iptables rules...
+[2026-06-16 00:33:28] [INFO] [ips]   SIMULATE DROP 192.168.1.99
+[2026-06-16 00:33:28] [INFO] [ips] 
+[TEST 5] Unblocking 192.168.1.99...
+[2026-06-16 00:33:28] [INFO] [ips] [IPS:SIM] Would run: iptables -D WATCHMAN_IPS -s 192.168.1.99 -j DROP
+[2026-06-16 00:33:28] [INFO] [ips] [IPS] UNBLOCKED 192.168.1.99
+[2026-06-16 00:33:28] [INFO] [ips]   Result: {'success': True, 'ip': '192.168.1.99', 'iptables': {'simulated': True}}
+[2026-06-16 00:33:28] [INFO] [ips] 
+IPS module test complete.
+
