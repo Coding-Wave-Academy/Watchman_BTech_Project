@@ -211,3 +211,5 @@ IPS module test complete.
 [2026-06-16 04:07:16] [WARNING] [predict] [ALERT] 2026-06-16T03:07:16.327132 | Type: Anomaly (HIGH) | From: 192.168.81.167:56391 -> 13.69.109.130:443 | Packets: 29 | RF Conf: 84.00% | Note: RF low confidence=0.84
 [2026-06-16 04:07:17] [WARNING] [predict] [ALERT] 2026-06-16T03:07:17.668035 | Type: Anomaly (HIGH) | From: 13.69.109.130:443 -> 192.168.81.167:56391 | Packets: 18 | RF Conf: 78.00% | Note: RF low confidence=0.78
 [2026-06-16 04:07:19] [WARNING] [predict] [ALERT] 2026-06-16T03:07:19.783178 | Type: Anomaly (HIGH) | From: 192.168.81.167:52178 -> 140.82.114.25:443 | Packets: 11 | RF Conf: 82.00% | Note: RF low confidence=0.82
+[2026-06-16 04:07:23] [WARNING] [predict] [ALERT] 2026-06-16T03:07:23.984275 | Type: Anomaly (HIGH) | From: 192.168.81.167:57827 -> 192.168.81.28:53 | Packets: 2 | RF Conf: 74.00% | Note: RF low confidence=0.74
+[2026-06-16 04:07:25] [WARNING] [predict] [ALERT] 2026-06-16T03:07:25.740828 | Type: Anomaly (HIGH) | From: 192.168.81.167:57045 -> 140.82.121.6:443 | Packets: 36 | RF Conf: 76.00% | Note: RF low confidence=0.76
