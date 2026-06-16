@@ -54,9 +54,12 @@ export default function Dashboard() {
     return () => { ws?.close() }
   }, [])
 
-  const totalAlerts = (stats as { total_alerts?: number }).total_alerts ?? 57
-  const criticalCount = (stats as { critical?: number }).critical ?? 12
-  const warningCount = totalAlerts - criticalCount
+  const totalAlerts = (stats as { total_alerts?: number }).total_alerts ?? 0
+  const avgConf = ((stats as { average_confidence?: number }).average_confidence ?? 0) * 100
+  const confirmedAnchors = (stats as { confirmed_anchors?: number }).confirmed_anchors ?? 0
+
+  const criticalCount = alerts.filter(a => a.confidence >= 90).length
+  const warningCount = alerts.filter(a => a.confidence < 90).length
 
   const daemon = (systemStatus as { daemon?: { state?: string } }).daemon
   const captureState = daemon ? (daemon as { state?: string }).state ?? "unknown" : "unknown"
@@ -65,52 +68,45 @@ export default function Dashboard() {
     <div className="space-y-6">
       {/* Top KPI Cards */}
       <div className="grid gap-4 md:grid-cols-3">
-        {/* Network Throughput */}
+        {/* System Status */}
         <Card className="glass-panel border-border relative overflow-hidden">
           <div className="absolute -bottom-8 -left-8 w-32 h-32 bg-blue-500/5 rounded-full blur-2xl"></div>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">Network Throughput</CardTitle>
-            <div className="flex items-center gap-1">
-              <Badge variant="outline" className="text-emerald-400 border-emerald-400/30 text-[10px] px-1.5">+12%</Badge>
-              <Activity className="h-4 w-4 text-blue-400" />
-            </div>
+            <CardTitle className="text-sm font-medium text-muted-foreground">System Status</CardTitle>
+            <Activity className="h-4 w-4 text-blue-400" />
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold tracking-tight">4.2 Gbps</div>
-            <div className="mt-3 h-12 w-full">
-              <ResponsiveContainer width="100%" height="100%">
-                <AreaChart data={[{v:1},{v:2},{v:1.5},{v:3},{v:2},{v:4},{v:3}]}>
-                  <defs>
-                    <linearGradient id="miniGrad" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%" stopColor="#3b82f6" stopOpacity={0.3}/>
-                      <stop offset="100%" stopColor="#3b82f6" stopOpacity={0}/>
-                    </linearGradient>
-                  </defs>
-                  <Area type="monotone" dataKey="v" stroke="#3b82f6" strokeWidth={2} fill="url(#miniGrad)" dot={false} />
-                </AreaChart>
-              </ResponsiveContainer>
+            <div className="text-3xl font-bold tracking-tight capitalize">{captureState === "running" ? "Active" : captureState}</div>
+            <div className="flex items-center gap-2 mt-3">
+              <span className={`w-2 h-2 rounded-full ${captureState === "running" ? "bg-emerald-400" : "bg-red-400"}`}></span>
+              <span className="text-xs text-muted-foreground">Packet Capture Daemon</span>
             </div>
-            <p className="text-xs text-muted-foreground mt-1">Peak traffic at 14:00 UTC</p>
+            <div className="mt-4 pt-4 border-t border-border flex items-center justify-between">
+              <span className="text-xs text-muted-foreground">Anchored Blocks</span>
+              <span className="font-mono text-sm font-medium">{confirmedAnchors}</span>
+            </div>
           </CardContent>
         </Card>
 
-        {/* ML Detection Rate */}
+        {/* ML Confidence */}
         <Card className="glass-panel border-border relative overflow-hidden">
           <div className="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full blur-2xl -mr-16 -mt-16"></div>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">ML Detection Rate</CardTitle>
+            <CardTitle className="text-sm font-medium text-muted-foreground">Average ML Confidence</CardTitle>
             <Zap className="h-4 w-4 text-primary" />
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold">99.8%</div>
+            <div className="text-3xl font-bold">{avgConf.toFixed(1)}%</div>
             <div className="flex items-center justify-between mt-3">
               <span className="text-xs text-muted-foreground">Confidence Score</span>
-              <Badge variant="outline" className="text-emerald-400 border-emerald-400/30 text-[10px]">High</Badge>
+              <Badge variant="outline" className={`text-[10px] ${avgConf >= 90 ? "text-emerald-400 border-emerald-400/30" : "text-amber-400 border-amber-400/30"}`}>
+                {avgConf >= 90 ? "High" : avgConf >= 70 ? "Medium" : "Low"}
+              </Badge>
             </div>
             <div className="w-full bg-secondary h-2 mt-2 rounded-full overflow-hidden">
-              <div className="bg-gradient-to-r from-blue-500 to-purple-500 h-full rounded-full transition-all duration-1000" style={{ width: '99.8%' }}></div>
+              <div className="bg-gradient-to-r from-blue-500 to-purple-500 h-full rounded-full transition-all duration-1000" style={{ width: `${avgConf}%` }}></div>
             </div>
-            <p className="text-xs text-muted-foreground mt-2">+0.4% accuracy vs last week</p>
+            <p className="text-xs text-muted-foreground mt-2">Overall detection reliability</p>
           </CardContent>
         </Card>
 
