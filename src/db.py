@@ -10,7 +10,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-from watchman_config import DB_PATH
+from src.watchman_config import DB_PATH
 
 
 def utc_now() -> str:

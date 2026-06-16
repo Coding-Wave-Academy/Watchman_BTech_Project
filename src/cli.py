@@ -13,10 +13,10 @@ import typer
 from rich.console import Console
 from rich.table import Table
 
-import auth
-import db
-from anchoring import AnchorService
-from watchman_config import BASE_DIR, load_config, save_config
+from src import auth
+from src import db
+from src.anchoring import AnchorService
+from src.watchman_config import BASE_DIR, load_config, save_config
 
 
 app = typer.Typer(help="WatchMan NIDS operations CLI")

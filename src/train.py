@@ -12,7 +12,7 @@ DESIGN NOTE:
 
 import os
 import time
-from logger import logger as log
+from src.logger import logger as log
 import collections
 import joblib
 import numpy as np

@@ -14,11 +14,11 @@ from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
-import auth
-import db
-from anchoring import AnchorService
-from detection_service import DetectionService
-from watchman_config import BASE_DIR, DASHBOARD_DIR, load_config
+from src import auth
+from src import db
+from src.anchoring import AnchorService
+from src.detection_service import DetectionService
+from src.watchman_config import BASE_DIR, DASHBOARD_DIR, load_config
 
 
 config = load_config()

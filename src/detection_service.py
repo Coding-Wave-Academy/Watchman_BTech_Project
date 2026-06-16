@@ -8,8 +8,8 @@ import time
 from pathlib import Path
 from typing import Any
 
-import db
-from watchman_config import MODELS_DIR, load_config, resolve_path
+from src import db
+from src.watchman_config import MODELS_DIR, load_config, resolve_path
 
 
 class DetectionService:

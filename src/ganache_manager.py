@@ -25,7 +25,7 @@ import threading
 import logging
 from pathlib import Path
 
-from logger import logger as log
+from src.logger import logger as log
 
 # ─────────────────────────────────────────────────────────────
 # CONFIG

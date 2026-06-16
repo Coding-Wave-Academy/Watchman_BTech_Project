@@ -25,7 +25,7 @@ from collections import defaultdict
 from concurrent.futures import ThreadPoolExecutor
 from scapy.all import sniff, IP, TCP, UDP, ICMP
 
-from logger import logger
+from src.logger import logger
 
 warnings.filterwarnings('ignore')
 

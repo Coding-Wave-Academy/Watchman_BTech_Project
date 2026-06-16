@@ -7,9 +7,9 @@ import time
 import uuid
 from typing import Any
 
-import db
-from merkle import merkle_proof, merkle_root, verify_proof
-from watchman_config import load_config
+from src import db
+from src.merkle import merkle_proof, merkle_root, verify_proof
+from src.watchman_config import load_config
 
 
 class AnchorService:

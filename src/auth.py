@@ -8,8 +8,8 @@ from typing import Any
 import bcrypt
 import jwt
 
-import db
-from watchman_config import load_config
+from src import db
+from src.watchman_config import load_config
 
 
 ALGORITHM = "HS256"

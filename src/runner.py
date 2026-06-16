@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import argparse
 
-from app import main
+from src.app import main
 
 
 def parse_args() -> argparse.Namespace:

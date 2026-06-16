@@ -18,7 +18,7 @@ import platform
 import sqlite3
 import os
 from datetime import datetime, timezone
-from logger import logger as log
+from src.logger import logger as log
 
 # ─────────────────────────────────────────────────────────────
 # CONFIG
