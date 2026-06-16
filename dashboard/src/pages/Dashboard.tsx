@@ -200,7 +200,7 @@ export default function Dashboard() {
                   <div className="text-[11px] font-mono text-muted-foreground mt-0.5 truncate">From: {alert.src_ip || 'Unknown'}</div>
                 </div>
               </div>
-            ))))}
+            )))}
             <div className="pt-3">
               <Link to="/ledger" className="flex items-center justify-center gap-1 text-sm text-primary hover:underline">
                 View All Transactions <ExternalLink className="h-3 w-3" />
