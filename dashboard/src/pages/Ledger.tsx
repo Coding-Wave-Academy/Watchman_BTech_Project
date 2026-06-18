@@ -49,7 +49,6 @@ export default function Ledger() {
           <CardContent>
             <div className="flex items-end gap-2">
               <span className="text-3xl font-bold">{totalBlocks.toLocaleString()}</span>
-              <Badge variant="outline" className="text-emerald-400 border-emerald-400/30 text-[10px] mb-1">~12.4%</Badge>
             </div>
           </CardContent>
         </Card>
@@ -59,7 +58,9 @@ export default function Ledger() {
             <Clock className="h-5 w-5 text-blue-400" />
           </CardHeader>
           <CardContent>
-            <span className="text-3xl font-bold">2s ago</span>
+            <span className="text-3xl font-bold">
+              {blocks.length > 0 ? new Date(blocks[0].timestamp).toLocaleTimeString() : "N/A"}
+            </span>
           </CardContent>
         </Card>
         <Card className="glass-panel border-primary/20">

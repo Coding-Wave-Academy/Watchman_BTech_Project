@@ -90,8 +90,7 @@ export default function Alerts() {
           </CardHeader>
           <CardContent>
             <div className="flex items-end gap-2">
-              <span className="text-3xl font-bold">{totalActive || 24}</span>
-              <Badge variant="outline" className="text-red-400 border-red-400/30 text-[10px] mb-1">+12%</Badge>
+              <span className="text-3xl font-bold">{totalActive}</span>
             </div>
           </CardContent>
         </Card>
@@ -102,8 +101,7 @@ export default function Alerts() {
           </CardHeader>
           <CardContent>
             <div className="flex items-end gap-2">
-              <span className="text-3xl font-bold">{totalBlocked || "1,042"}</span>
-              <Badge variant="outline" className="text-emerald-400 border-emerald-400/30 text-[10px] mb-1">+5%</Badge>
+              <span className="text-3xl font-bold">{totalBlocked}</span>
             </div>
           </CardContent>
         </Card>
@@ -114,8 +112,8 @@ export default function Alerts() {
           </CardHeader>
           <CardContent>
             <div className="flex items-end gap-2">
-              <span className="text-3xl font-bold">8,921</span>
-              <span className="text-xs text-muted-foreground mb-1">Last 24h</span>
+              <span className="text-3xl font-bold">{alerts.filter(a => a.tx_hash || a.status === 'verified').length}</span>
+              <span className="text-xs text-muted-foreground mb-1">Total in view</span>
             </div>
           </CardContent>
         </Card>
@@ -126,7 +124,7 @@ export default function Alerts() {
           </CardHeader>
           <CardContent>
             <div className="flex items-end gap-2">
-              <span className="text-3xl font-bold text-emerald-400">98%</span>
+              <span className="text-3xl font-bold text-emerald-400">Live</span>
               <Badge variant="outline" className="text-emerald-400 border-emerald-400/30 text-[10px] mb-1">Optimal</Badge>
             </div>
           </CardContent>

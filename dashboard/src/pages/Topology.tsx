@@ -218,7 +218,7 @@ export default function Topology() {
               <div className="flex justify-between"><span className="text-muted-foreground">OS</span><span className="font-medium">{selectedNode.os}</span></div>
               <div className="flex justify-between"><span className="text-muted-foreground">ML Risk Score</span><span className={`font-bold ${selectedNode.riskScore >= 0.7 ? "text-red-400" : selectedNode.riskScore >= 0.4 ? "text-amber-400" : "text-emerald-400"}`}>{selectedNode.riskScore.toFixed(2)} ({selectedNode.riskScore >= 0.7 ? "High" : selectedNode.riskScore >= 0.4 ? "Medium" : "Low"})</span></div>
               <div className="pt-1 border-t border-border">
-                <span className="text-xs font-mono text-muted-foreground">0x71C...a2E Verified</span>
+                <span className="text-xs font-mono text-muted-foreground">{selectedNode.status === 'verified' ? 'Verified on Polygon' : 'Local Detection'}</span>
               </div>
             </CardContent>
           </Card>

@@ -415,4 +415,11 @@ def get_trends() -> list[dict[str, Any]]:
 def _decode_alert(row: dict[str, Any]) -> dict[str, Any]:
     proof = row.get("merkle_proof")
     row["merkle_proof"] = json.loads(proof) if proof else []
+    
+    # Map backend schema to frontend interface expected keys
+    row["src_ip"] = row.get("source_ip")
+    row["dst_ip"] = row.get("destination_ip")
+    row["confidence"] = row.get("confidence_score")
+    row["tx_hash"] = row.get("polygon_tx_hash")
+    
     return row
