@@ -82,8 +82,8 @@ export default function Topology() {
 
     // Edges
     filteredEdges.forEach(edge => {
-      const fromNode = MOCK_NODES.find(n => n.id === edge.from)
-      const toNode = MOCK_NODES.find(n => n.id === edge.to)
+      const fromNode = filteredNodes.find(n => n.id === edge.from)
+      const toNode = filteredNodes.find(n => n.id === edge.to)
       if (!fromNode || !toNode) return
 
       const isThreated = fromNode.status === "threat" || toNode.status === "threat"
