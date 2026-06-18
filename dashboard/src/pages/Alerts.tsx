@@ -196,7 +196,7 @@ export default function Alerts() {
                     </TableCell>
                     <TableCell>
                       {a.tx_hash ? (
-                        <a href={`https://polygonscan.com/tx/${a.tx_hash}`} target="_blank" rel="noreferrer" className="font-mono text-xs text-primary hover:underline bg-secondary/50 px-2 py-1 rounded inline-flex items-center gap-1">
+                        <a href={`https://amoy.polygonscan.com/tx/${a.tx_hash}`} target="_blank" rel="noreferrer" className="font-mono text-xs text-primary hover:underline bg-secondary/50 px-2 py-1 rounded inline-flex items-center gap-1">
                           {`${a.tx_hash.slice(0,6)}...${a.tx_hash.slice(-4)}`} <FaExternalLinkAlt className="h-2 w-2" />
                         </a>
                       ) : (

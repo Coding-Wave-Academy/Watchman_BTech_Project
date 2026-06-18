@@ -49,6 +49,19 @@ def _api(path: str, method: str = "GET", body: dict[str, Any] | None = None) -> 
         raise typer.BadParameter("requests is required for API-backed CLI commands") from exc
     headers = {}
     token = _read_token()
+    if not token:
+        # Auto-login if we can't read the saved token (e.g. non-root user)
+        try:
+            cfg = load_config()
+            login_body = {
+                "username": cfg["bootstrap"]["admin_username"],
+                "password": cfg["bootstrap"]["admin_password"],
+            }
+            login_resp = requests.post(_api_base() + "/auth/login", json=login_body, timeout=10)
+            if login_resp.status_code == 200:
+                token = login_resp.json().get("token")
+        except Exception:
+            pass
     if token:
         headers["Authorization"] = f"Bearer {token}"
     response = requests.request(method, _api_base() + path, json=body, headers=headers, timeout=10)
