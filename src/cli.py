@@ -76,21 +76,28 @@ def install(
 
 @app.command()
 def start() -> None:
-    """Start the API server in the foreground."""
+    """Start the WatchMan daemon."""
     import os
     if os.name == "posix" and getattr(os, "geteuid", lambda: 0)() != 0:
-        console.print("[red]Error: Root privileges required to start the daemon and capture packets. Use 'sudo watchman start'[/red]")
+        console.print("[red]Error: Root privileges required to start the daemon. Use 'sudo watchman start'[/red]")
         raise typer.Exit(1)
         
-    cfg = load_config()
-    console.print(f"Starting WatchMan API on http://127.0.0.1:{cfg['api']['port']}")
+    console.print("Starting WatchMan daemon...")
     try:
-        process = subprocess.Popen([sys.executable, str(BASE_DIR / "src" / "app.py")], cwd=str(BASE_DIR))
-        process.wait()
-    except KeyboardInterrupt:
-        console.print("\nShutting down WatchMan API...")
-        process.terminate()
-        process.wait()
+        subprocess.run(["systemctl", "start", "watchman"], check=True, capture_output=True)
+        console.print("[green]Service started via systemd.[/green]")
+        console.print("Dashboard is now available at http://127.0.0.1:5000")
+    except Exception:
+        console.print("[yellow]Systemd not found or failed. Starting API server in the foreground...[/yellow]")
+        cfg = load_config()
+        console.print(f"Starting WatchMan API on http://127.0.0.1:{cfg['api']['port']}")
+        try:
+            process = subprocess.Popen([sys.executable, str(BASE_DIR / "src" / "app.py")], cwd=str(BASE_DIR))
+            process.wait()
+        except KeyboardInterrupt:
+            console.print("\nShutting down WatchMan API...")
+            process.terminate()
+            process.wait()
 
 @app.command()
 def configure() -> None:

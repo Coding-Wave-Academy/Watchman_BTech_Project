@@ -74,13 +74,15 @@ echo "[6/7] Setting up Systemd Service and CLI..."
 ln -sf /opt/watchman/app/.venv/bin/watchman /usr/local/bin/watchman
 cp watchman.service /etc/systemd/system/
 systemctl daemon-reload
-systemctl enable watchman.service
+# Removed auto-start per user request
+# systemctl enable watchman.service
 
-echo "[7/7] Starting WatchMan Daemon..."
-systemctl start watchman.service
+echo "[7/7] Installation finalized."
+# systemctl start watchman.service
 
 echo "=========================================="
 echo " Installation Complete!"
-echo " Use 'watchman status' to check the daemon."
+echo " The daemon is currently stopped."
+echo " To start it, run: sudo watchman start"
 echo " Use 'watchman configure' to update settings."
 echo "=========================================="
