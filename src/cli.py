@@ -221,6 +221,11 @@ def verify(alert_id: str) -> None:
 @app.command()
 def anchor() -> None:
     """Run one anchor cycle now."""
+    import os
+    if os.name == "posix" and getattr(os, "geteuid", lambda: 0)() != 0:
+        console.print("[red]Error: Root privileges required to anchor alerts because it writes to the system database.[/red]")
+        sys.exit(1)
+        
     batch_id = AnchorService().run_once()
     console.print(batch_id or "No pending alerts.")
 
