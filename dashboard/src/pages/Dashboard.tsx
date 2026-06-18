@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
-import { Activity, ShieldAlert, Zap, TrendingUp, ExternalLink } from "lucide-react"
+import { FaHeartbeat, FaExclamationTriangle, FaBolt, FaChartLine, FaExternalLinkAlt, FaServer, FaCogs, FaDownload, FaBug, FaNetworkWired, FaLock, FaGlobe } from "react-icons/fa"
 import { fetchAlerts, fetchAlertStats, fetchSystemStatus, fetchAlertTrends, connectAlertStream, type Alert } from "@/lib/api"
 import { Link } from "react-router-dom"
 
@@ -15,8 +15,8 @@ function severityColor(confidence: number) {
 }
 
 function severityLabel(confidence: number) {
-  if (confidence >= 90) return "Critical"
-  if (confidence >= 70) return "High"
+  if (confidence >= 0.90) return "Critical"
+  if (confidence >= 0.70) return "High"
   return "Medium"
 }
 
@@ -58,11 +58,11 @@ export default function Dashboard() {
   const avgConf = ((stats as { average_confidence?: number }).average_confidence ?? 0) * 100
   const confirmedAnchors = (stats as { confirmed_anchors?: number }).confirmed_anchors ?? 0
 
-  const criticalCount = alerts.filter(a => a.confidence >= 90).length
-  const warningCount = alerts.filter(a => a.confidence < 90).length
+  const criticalCount = alerts.filter(a => a.confidence >= 0.90).length
+  const warningCount = alerts.filter(a => a.confidence < 0.90).length
 
-  const daemon = (systemStatus as { daemon?: { state?: string } }).daemon
-  const captureState = daemon ? (daemon as { state?: string }).state ?? "unknown" : "unknown"
+  const daemon = (systemStatus as { daemon?: { running?: boolean } }).daemon
+  const captureState = daemon ? (daemon.running ? "running" : "stopped") : "unknown"
 
   return (
     <div className="space-y-6">
@@ -73,7 +73,7 @@ export default function Dashboard() {
           <div className="absolute -bottom-8 -left-8 w-32 h-32 bg-blue-500/5 rounded-full blur-2xl"></div>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium text-muted-foreground">System Status</CardTitle>
-            <Activity className="h-4 w-4 text-blue-400" />
+            <FaHeartbeat className="h-4 w-4 text-blue-400" />
           </CardHeader>
           <CardContent>
             <div className="text-3xl font-bold tracking-tight capitalize">{captureState === "running" ? "Active" : captureState}</div>
@@ -93,7 +93,7 @@ export default function Dashboard() {
           <div className="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full blur-2xl -mr-16 -mt-16"></div>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium text-muted-foreground">Average ML Confidence</CardTitle>
-            <Zap className="h-4 w-4 text-primary" />
+            <FaBolt className="h-4 w-4 text-primary" />
           </CardHeader>
           <CardContent>
             <div className="text-3xl font-bold">{avgConf.toFixed(1)}%</div>
@@ -115,7 +115,7 @@ export default function Dashboard() {
           <div className="absolute bottom-0 right-0 w-24 h-24 bg-red-500/10 rounded-full blur-2xl"></div>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium text-muted-foreground">Active Alerts</CardTitle>
-            <ShieldAlert className="h-4 w-4 text-red-400" />
+            <FaExclamationTriangle className="h-4 w-4 text-red-400" />
           </CardHeader>
           <CardContent>
             <div className="text-3xl font-bold">{totalAlerts}</div>
@@ -139,11 +139,11 @@ export default function Dashboard() {
         <Card className="lg:col-span-5 glass-panel border-border">
           <CardHeader className="flex flex-row items-center justify-between">
             <div>
-              <CardTitle className="text-lg">24h Attack Trends</CardTitle>
-              <CardDescription>Frequency of blocked intrusion attempts</CardDescription>
+              <CardTitle className="text-lg text-foreground">24h Attack Trends</CardTitle>
+              <CardDescription className="text-muted-foreground">Frequency of blocked intrusion attempts</CardDescription>
             </div>
             <div className="flex items-center gap-2">
-              <Button variant="outline" size="sm">Last 24 Hours</Button>
+              <Button variant="outline" size="sm" onClick={() => alert("Date picker functionality coming soon!")}>Last 24 Hours</Button>
             </div>
           </CardHeader>
           <CardContent className="h-[300px]">
@@ -173,9 +173,9 @@ export default function Dashboard() {
           <CardHeader className="pb-3">
             <div className="flex items-center gap-2">
               <span className="text-emerald-400">✓</span>
-              <CardTitle className="text-lg">Verified Blockchain Logs</CardTitle>
+              <CardTitle className="text-lg text-foreground">Verified Blockchain Logs</CardTitle>
             </div>
-            <CardDescription>Immutable audit trail via Smart Contracts</CardDescription>
+            <CardDescription className="text-muted-foreground">Immutable audit trail via Smart Contracts</CardDescription>
           </CardHeader>
           <CardContent className="space-y-0">
             {alerts.length === 0 ? (
@@ -184,8 +184,8 @@ export default function Dashboard() {
               alerts.slice(0, 5).map((alert, i) => (
               <div key={alert.alert_id} className="flex gap-3 py-3 border-b border-border last:border-0">
                 <div className="flex flex-col items-center">
-                  <div className={`w-2.5 h-2.5 rounded-full ${alert.confidence >= 90 ? 'bg-red-400' : alert.confidence >= 70 ? 'bg-amber-400' : 'bg-purple-400'} mt-1`}></div>
-                  {i < alerts.slice(0, 5).length - 1 && <div className="w-px flex-1 bg-border mt-1"></div>}
+                  <div className={`w-2.5 h-2.5 rounded-full ${alert.confidence >= 0.90 ? 'bg-red-400' : alert.confidence >= 0.70 ? 'bg-amber-400' : 'bg-purple-400'} mt-1`}></div>
+                  {i < Math.min(alerts.length, 5) - 1 && <div className="w-px flex-1 bg-border mt-1"></div>}
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center justify-between mb-0.5">
@@ -198,8 +198,8 @@ export default function Dashboard() {
               </div>
             )))}
             <div className="pt-3">
-              <Link to="/ledger" className="flex items-center justify-center gap-1 text-sm text-primary hover:underline">
-                View All Transactions <ExternalLink className="h-3 w-3" />
+              <Link to="/ledger" className="flex items-center justify-center gap-1 text-sm text-primary hover:underline font-medium">
+                View All Transactions <FaExternalLinkAlt className="h-3 w-3" />
               </Link>
             </div>
           </CardContent>
@@ -209,7 +209,7 @@ export default function Dashboard() {
       {/* Active Threat Feed */}
       <Card className="glass-panel border-border">
         <CardHeader className="flex flex-row items-center justify-between">
-          <CardTitle className="text-lg">Active Threat Feed</CardTitle>
+          <CardTitle className="text-lg text-foreground">Active Threat Feed</CardTitle>
           <div className="flex items-center gap-2">
             {live && <span className="flex items-center gap-1 text-xs text-emerald-400"><span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>Live</span>}
             <Link to="/alerts">
@@ -241,19 +241,21 @@ export default function Dashboard() {
                   <TableCell className="font-mono text-sm">{a.src_ip}</TableCell>
                   <TableCell className="text-muted-foreground">{a.dst_ip}</TableCell>
                   <TableCell>
-                    <Badge variant={severityColor(a.confidence) as "destructive" | "outline" | "secondary"} className={a.confidence >= 70 && a.confidence < 90 ? "text-amber-400 border-amber-400/30" : ""}>
+                    <Badge variant={severityColor(a.confidence) as "destructive" | "outline" | "secondary"} className={a.confidence >= 0.70 && a.confidence < 0.90 ? "text-amber-400 border-amber-400/30" : ""}>
                       {severityLabel(a.confidence)}
                     </Badge>
                   </TableCell>
                   <TableCell>
                     <div className="flex items-center gap-2">
                       <div className="w-20 h-1.5 bg-secondary rounded-full overflow-hidden">
-                        <div className={`h-full rounded-full ${a.confidence >= 90 ? 'bg-red-500' : a.confidence >= 70 ? 'bg-amber-500' : 'bg-purple-500'}`} style={{ width: `${a.confidence}%` }}></div>
+                        <div className={`h-full rounded-full ${a.confidence >= 0.90 ? "bg-red-500" : a.confidence >= 0.70 ? "bg-amber-500" : "bg-blue-500"}`} style={{ width: `${a.confidence * 100}%` }}></div>
                       </div>
-                      <span className="text-xs text-muted-foreground w-8">{a.confidence}%</span>
+                      <span className="text-xs text-muted-foreground font-mono">{Math.round(a.confidence * 100)}%</span>
                     </div>
                   </TableCell>
-                  <TableCell className="capitalize text-sm">{a.status || "Blocked"}</TableCell>
+                  <TableCell>
+                    <Button variant="outline" size="sm" className="h-8 text-xs font-medium" onClick={() => alert("Action triggered for " + a.src_ip)}>Action</Button>
+                  </TableCell>
                 </TableRow>
               )))}
             </TableBody>

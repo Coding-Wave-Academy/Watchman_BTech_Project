@@ -1,14 +1,14 @@
 import { Link, Outlet, useLocation } from "react-router-dom"
-import { Shield, LayoutDashboard, AlertTriangle, Network, Blocks, Settings, Bell } from "lucide-react"
+import { FaShieldAlt, FaTachometerAlt, FaExclamationTriangle, FaProjectDiagram, FaCube, FaCog, FaBell } from "react-icons/fa"
 
 export default function MainLayout() {
   const location = useLocation()
   
   const navItems = [
-    { name: "Dashboard", path: "/dashboard", icon: LayoutDashboard },
-    { name: "Security Alerts", path: "/alerts", icon: AlertTriangle },
-    { name: "Topology Map", path: "/topology", icon: Network },
-    { name: "Blockchain Ledger", path: "/ledger", icon: Blocks },
+    { name: "Dashboard", path: "/dashboard", icon: FaTachometerAlt },
+    { name: "Security Alerts", path: "/alerts", icon: FaExclamationTriangle },
+    { name: "Topology Map", path: "/topology", icon: FaProjectDiagram },
+    { name: "Blockchain Ledger", path: "/ledger", icon: FaCube },
   ]
 
   return (
@@ -54,11 +54,11 @@ export default function MainLayout() {
             <span className="px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-500 text-xs font-semibold border border-emerald-500/20">
               SYSTEM SECURE
             </span>
-            <button className="p-2 text-muted-foreground hover:text-foreground rounded-full hover:bg-secondary transition-colors">
-              <Bell className="h-5 w-5" />
+            <button className="p-2 text-muted-foreground hover:text-foreground rounded-full hover:bg-secondary transition-colors" onClick={() => alert("Notifications coming soon")}>
+              <FaBell className="h-5 w-5" />
             </button>
-            <button className="p-2 text-muted-foreground hover:text-foreground rounded-full hover:bg-secondary transition-colors">
-              <Settings className="h-5 w-5" />
+            <button className="p-2 text-muted-foreground hover:text-foreground rounded-full hover:bg-secondary transition-colors" onClick={() => alert("Settings coming soon")}>
+              <FaCog className="h-5 w-5" />
             </button>
             <div className="h-8 w-8 rounded-full bg-gradient-to-tr from-primary to-purple-500"></div>
           </div>

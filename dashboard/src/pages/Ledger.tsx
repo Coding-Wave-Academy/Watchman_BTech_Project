@@ -2,7 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { Blocks, Clock, CheckCircle2, ChevronLeft, ChevronRight, Filter } from "lucide-react"
+import { FaCube, FaClock, FaCheckCircle, FaChevronLeft, FaChevronRight, FaFilter } from "react-icons/fa"
 import { useState, useEffect, useCallback } from "react"
 import { fetchSystemLedger } from "@/lib/api"
 
@@ -34,8 +34,8 @@ export default function Ledger() {
           <h1 className="text-3xl font-bold tracking-tight">Blockchain Ledger</h1>
           <p className="text-muted-foreground mt-1">Immutable security event tracking & verification</p>
         </div>
-        <Button variant="outline" size="sm" className="gap-1.5">
-          <Filter className="h-4 w-4" /> Filter
+        <Button variant="outline" size="sm" className="gap-1.5" onClick={() => alert("Filter options coming soon")}>
+          <FaFilter className="h-4 w-4" /> Filter
         </Button>
       </div>
 
@@ -44,7 +44,7 @@ export default function Ledger() {
         <Card className="glass-panel">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium text-muted-foreground">TOTAL BLOCKS</CardTitle>
-            <Blocks className="h-5 w-5 text-blue-400" />
+            <FaCube className="h-5 w-5 text-blue-400" />
           </CardHeader>
           <CardContent>
             <div className="flex items-end gap-2">
@@ -55,7 +55,7 @@ export default function Ledger() {
         <Card className="glass-panel">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium text-muted-foreground">LAST BLOCK TIME</CardTitle>
-            <Clock className="h-5 w-5 text-blue-400" />
+            <FaClock className="h-5 w-5 text-blue-400" />
           </CardHeader>
           <CardContent>
             <span className="text-3xl font-bold">
@@ -66,7 +66,7 @@ export default function Ledger() {
         <Card className="glass-panel border-primary/20">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium text-muted-foreground">NODE SYNC STATUS</CardTitle>
-            <CheckCircle2 className="h-5 w-5 text-emerald-400" />
+            <FaCheckCircle className="h-5 w-5 text-emerald-400" />
           </CardHeader>
           <CardContent>
             <div className="flex items-end gap-2">
@@ -137,11 +137,11 @@ export default function Ledger() {
           {/* Pagination */}
           <div className="flex items-center justify-between px-6 py-3 border-t border-border">
             <div className="flex items-center gap-2">
-              <Button variant="outline" size="icon" className="h-8 w-8" disabled={page === 0} onClick={() => setPage(p => p - 1)}>
-                <ChevronLeft className="h-4 w-4" />
+              <Button variant="outline" size="icon" className="h-8 w-8" onClick={() => setPage(p => Math.max(0, p - 1))} disabled={page === 0}>
+                <FaChevronLeft className="h-4 w-4" />
               </Button>
-              <Button variant="outline" size="icon" className="h-8 w-8" disabled={page >= totalPages - 1} onClick={() => setPage(p => p + 1)}>
-                <ChevronRight className="h-4 w-4" />
+              <Button variant="outline" size="icon" className="h-8 w-8" onClick={() => setPage(p => Math.min(totalPages - 1, p + 1))} disabled={page >= totalPages - 1}>
+                <FaChevronRight className="h-4 w-4" />
               </Button>
             </div>
             <span className="text-sm text-muted-foreground">Page {page + 1} of {totalPages.toLocaleString()}</span>

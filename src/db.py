@@ -402,15 +402,21 @@ def get_trends() -> list[dict[str, Any]]:
     ).fetchall()
     conn.close()
     
-    if not rows:
-        return [
-            {"time": "00:00", "attacks": 0},
-            {"time": "06:00", "attacks": 0},
-            {"time": "12:00", "attacks": 0},
-            {"time": "18:00", "attacks": 0},
-            {"time": "23:59", "attacks": 0},
-        ]
-    return [{"time": r["time"], "attacks": r["attacks"]} for r in rows]
+    # Pad the last 24 hours to ensure the graph always renders
+    import datetime
+    now = datetime.datetime.utcnow()
+    trends = []
+    data_map = {r["time"]: r["attacks"] for r in rows}
+    
+    for i in range(23, -1, -1):
+        dt = now - datetime.timedelta(hours=i)
+        hour_str = dt.strftime('%H:00')
+        trends.append({
+            "time": hour_str,
+            "attacks": data_map.get(hour_str, 0)
+        })
+        
+    return trends
 
 def _decode_alert(row: dict[str, Any]) -> dict[str, Any]:
     proof = row.get("merkle_proof")

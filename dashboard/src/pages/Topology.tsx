@@ -2,7 +2,7 @@ import { useEffect, useRef, useState, useCallback } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { Plus, Minus, Crosshair } from "lucide-react"
+import { FaPlus, FaMinus, FaCrosshairs } from "react-icons/fa"
 
 interface Node {
   id: string
@@ -258,11 +258,17 @@ export default function Topology() {
         </div>
 
         {/* Zoom Controls */}
-        <div className="absolute top-4 right-4 z-10 flex flex-col gap-1">
-          <Button variant="secondary" size="icon" className="h-8 w-8" onClick={() => setZoom(z => Math.min(z + 0.1, 2))}><Plus className="h-4 w-4" /></Button>
-          <Button variant="secondary" size="icon" className="h-8 w-8" onClick={() => setZoom(z => Math.max(z - 0.1, 0.5))}><Minus className="h-4 w-4" /></Button>
-          <Button variant="secondary" size="icon" className="h-8 w-8" onClick={() => setZoom(1)}><Crosshair className="h-4 w-4" /></Button>
-        </div>
+          <div className="absolute top-4 right-4 flex flex-col gap-2 z-10">
+            <Button variant="secondary" size="icon" className="h-8 w-8 bg-card/80 backdrop-blur" onClick={() => setZoom(z => Math.min(z + 0.2, 3))}>
+              <FaPlus className="h-4 w-4" />
+            </Button>
+            <Button variant="secondary" size="icon" className="h-8 w-8 bg-card/80 backdrop-blur" onClick={() => setZoom(z => Math.max(z - 0.2, 0.5))}>
+              <FaMinus className="h-4 w-4" />
+            </Button>
+            <Button variant="secondary" size="icon" className="h-8 w-8 bg-card/80 backdrop-blur" onClick={() => setZoom(1)}>
+              <FaCrosshairs className="h-4 w-4" />
+            </Button>
+          </div>
 
         {/* Canvas */}
         <Card className="glass-panel h-full overflow-hidden">

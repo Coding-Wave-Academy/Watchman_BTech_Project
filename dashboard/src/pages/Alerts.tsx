@@ -3,15 +3,15 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { ShieldAlert, ShieldCheck, Link2, HeartPulse, Download, RefreshCw, Zap, Bug, Globe, Lock, Crosshair, Server } from "lucide-react"
+import { FaExclamationTriangle, FaShieldAlt, FaLink, FaHeartbeat, FaDownload, FaSync, FaBolt, FaBug, FaGlobe, FaLock, FaCrosshairs, FaServer } from "react-icons/fa"
 import { fetchAlerts, updateAlertStatus, type Alert } from "@/lib/api"
 
-const THREAT_ICONS: Record<string, typeof Zap> = {
-  "DDoS": Zap,
-  "SQL Injection": Bug,
-  "Malware C2": Globe,
-  "Port Scan": Crosshair,
-  "Brute Force": Lock,
+const THREAT_ICONS: Record<string, typeof FaBolt> = {
+  "DDoS": FaBolt,
+  "SQL Injection": FaBug,
+  "Malware C2": FaGlobe,
+  "Port Scan": FaCrosshairs,
+  "Brute Force": FaLock,
 }
 
 const FILTER_OPTIONS = ["All Threats", "DDoS", "SQL Injection", "Malware", "Brute Force", "Port Scan"]
@@ -38,7 +38,7 @@ export default function Alerts() {
   useEffect(() => { loadAlerts() }, [loadAlerts])
 
   const handleAction = async (alert: Alert) => {
-    if (alert.confidence >= 90) {
+    if (alert.confidence >= 0.90) {
       setMitigationPopup(alert)
     } else {
       // Investigate: just mark as investigating
@@ -72,11 +72,11 @@ export default function Alerts() {
           <p className="text-muted-foreground mt-1">Real-time threat detection backed by immutable blockchain logs.</p>
         </div>
         <div className="flex items-center gap-2">
-          <Button variant="outline" size="sm" className="gap-1.5">
-            <Download className="h-4 w-4" /> Export CSV
+          <Button variant="outline" size="sm" className="gap-1.5" onClick={() => window.alert("CSV export will be available in the next release.")}>
+            <FaDownload className="h-4 w-4" /> Export CSV
           </Button>
-          <Button size="sm" className="gap-1.5 bg-emerald-600 hover:bg-emerald-700" onClick={loadAlerts}>
-            <RefreshCw className={`h-4 w-4 ${loading ? "animate-spin" : ""}`} /> Live Refresh
+          <Button size="sm" className="gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white" onClick={loadAlerts}>
+            <FaSync className={`h-4 w-4 ${loading ? "animate-spin" : ""}`} /> Live Refresh
           </Button>
         </div>
       </div>
@@ -86,7 +86,7 @@ export default function Alerts() {
         <Card className="glass-panel">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium text-muted-foreground">Active Threats</CardTitle>
-            <ShieldAlert className="h-5 w-5 text-red-400" />
+            <FaExclamationTriangle className="h-5 w-5 text-red-400" />
           </CardHeader>
           <CardContent>
             <div className="flex items-end gap-2">
@@ -97,7 +97,7 @@ export default function Alerts() {
         <Card className="glass-panel">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium text-muted-foreground">Mitigated Attacks</CardTitle>
-            <ShieldCheck className="h-5 w-5 text-emerald-400" />
+            <FaShieldAlt className="h-5 w-5 text-emerald-400" />
           </CardHeader>
           <CardContent>
             <div className="flex items-end gap-2">
@@ -107,8 +107,8 @@ export default function Alerts() {
         </Card>
         <Card className="glass-panel">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">Verified Logs</CardTitle>
-            <Link2 className="h-5 w-5 text-blue-400" />
+            <CardTitle className="text-sm font-medium text-muted-foreground">Blockchain Anchors</CardTitle>
+            <FaLink className="h-5 w-5 text-purple-400" />
           </CardHeader>
           <CardContent>
             <div className="flex items-end gap-2">
@@ -119,8 +119,8 @@ export default function Alerts() {
         </Card>
         <Card className="glass-panel">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">System Health</CardTitle>
-            <HeartPulse className="h-5 w-5 text-emerald-400" />
+            <CardTitle className="text-sm font-medium text-muted-foreground">IDS Status</CardTitle>
+            <FaHeartbeat className="h-5 w-5 text-blue-400" />
           </CardHeader>
           <CardContent>
             <div className="flex items-end gap-2">
@@ -163,8 +163,8 @@ export default function Alerts() {
             </TableHeader>
             <TableBody>
               {alerts.map((a) => {
-                const isCritical = a.confidence >= 85
-                const ThreatIcon = THREAT_ICONS[a.attack_type] || Server
+                const isCritical = a.confidence >= 0.85
+                const ThreatIcon = THREAT_ICONS[a.attack_type] || FaServer
                 return (
                   <TableRow key={a.alert_id} className="border-border h-16">
                     <TableCell className="pl-6">
@@ -183,9 +183,9 @@ export default function Alerts() {
                     <TableCell>
                       <div className="flex items-center gap-2">
                         <div className="w-24 h-2 bg-secondary rounded-full overflow-hidden">
-                          <div className={`h-full rounded-full ${a.confidence >= 90 ? "bg-red-500" : a.confidence >= 70 ? "bg-amber-500" : "bg-blue-500"}`} style={{ width: `${a.confidence}%` }}></div>
+                          <div className={`h-full rounded-full ${a.confidence >= 0.90 ? "bg-red-500" : a.confidence >= 0.70 ? "bg-amber-500" : "bg-blue-500"}`} style={{ width: `${a.confidence * 100}%` }}></div>
                         </div>
-                        <span className="text-xs text-muted-foreground font-mono w-8">{a.confidence}%</span>
+                        <span className="text-xs text-muted-foreground font-mono w-8">{Math.round(a.confidence * 100)}%</span>
                       </div>
                     </TableCell>
                     <TableCell>
@@ -227,7 +227,7 @@ export default function Alerts() {
             <CardContent className="p-4">
               <div className="flex items-start gap-3">
                 <div className="p-2 bg-primary/10 rounded-lg">
-                  <ShieldCheck className="h-5 w-5 text-primary" />
+                  <FaShieldAlt className="h-5 w-5 text-primary" />
                 </div>
                 <div className="flex-1 min-w-0">
                   <h4 className="font-semibold text-sm">IPS Auto-Mitigation</h4>
