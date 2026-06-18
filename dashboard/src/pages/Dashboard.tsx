@@ -190,9 +190,15 @@ export default function Dashboard() {
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center justify-between mb-0.5">
                     {alert.tx_hash ? (
-                      <a href={`https://amoy.polygonscan.com/tx/${alert.tx_hash}`} target="_blank" rel="noreferrer" className="text-xs font-mono text-muted-foreground hover:text-primary transition-colors flex items-center gap-1">
-                        {alert.tx_hash.substring(0, 16)}... <FaExternalLinkAlt className="h-2 w-2" />
-                      </a>
+                      alert.tx_hash.startsWith("0x") ? (
+                        <a href={`https://amoy.polygonscan.com/tx/${alert.tx_hash}`} target="_blank" rel="noreferrer" className="text-xs font-mono text-muted-foreground hover:text-primary transition-colors flex items-center gap-1">
+                          {alert.tx_hash.substring(0, 16)}... <FaExternalLinkAlt className="h-2 w-2" />
+                        </a>
+                      ) : (
+                        <span className="text-[10px] font-mono text-muted-foreground bg-blue-500/10 border border-blue-500/20 px-1.5 py-0.5 rounded" title={alert.tx_hash}>
+                          Demo Mode
+                        </span>
+                      )
                     ) : (
                       <span className="text-[11px] font-mono text-muted-foreground">Pending...</span>
                     )}

@@ -196,9 +196,15 @@ export default function Alerts() {
                     </TableCell>
                     <TableCell>
                       {a.tx_hash ? (
-                        <a href={`https://amoy.polygonscan.com/tx/${a.tx_hash}`} target="_blank" rel="noreferrer" className="font-mono text-xs text-primary hover:underline bg-secondary/50 px-2 py-1 rounded inline-flex items-center gap-1">
-                          {`${a.tx_hash.slice(0,6)}...${a.tx_hash.slice(-4)}`} <FaExternalLinkAlt className="h-2 w-2" />
-                        </a>
+                        a.tx_hash.startsWith("0x") ? (
+                          <a href={`https://amoy.polygonscan.com/tx/${a.tx_hash}`} target="_blank" rel="noreferrer" className="font-mono text-xs text-primary hover:underline bg-secondary/50 px-2 py-1 rounded inline-flex items-center gap-1">
+                            {`${a.tx_hash.slice(0,6)}...${a.tx_hash.slice(-4)}`} <FaExternalLinkAlt className="h-2 w-2" />
+                          </a>
+                        ) : (
+                          <span className="font-mono text-[10px] text-muted-foreground/70 bg-secondary/50 px-2 py-1 rounded inline-flex items-center" title={a.tx_hash}>
+                            Demo Mode
+                          </span>
+                        )
                       ) : (
                         <span className="font-mono text-xs text-muted-foreground/50 bg-secondary/50 px-2 py-1 rounded">Pending</span>
                       )}

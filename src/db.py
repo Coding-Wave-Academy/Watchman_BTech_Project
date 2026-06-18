@@ -406,14 +406,21 @@ def get_trends() -> list[dict[str, Any]]:
         return [{"time": (now - _dt.timedelta(hours=i)).strftime("%H:00"), "attacks": 0} for i in range(23, -1, -1)]
 
     # Parse the latest timestamp
-    for fmt in ("%Y-%m-%dT%H:%M:%S.%f", "%Y-%m-%dT%H:%M:%S", "%Y-%m-%d %H:%M:%S.%f", "%Y-%m-%d %H:%M:%S"):
-        try:
-            anchor = _dt.datetime.strptime(latest_ts, fmt)
-            break
-        except ValueError:
-            continue
-    else:
-        anchor = _dt.datetime.utcnow()
+    try:
+        ts_clean = latest_ts.replace("Z", "+00:00").replace(" ", "T")
+        anchor = _dt.datetime.fromisoformat(ts_clean)
+        if anchor.tzinfo is not None:
+            anchor = anchor.astimezone(_dt.timezone.utc).replace(tzinfo=None)
+    except Exception:
+        anchor = None
+        for fmt in ("%Y-%m-%dT%H:%M:%S.%f", "%Y-%m-%dT%H:%M:%S", "%Y-%m-%d %H:%M:%S.%f", "%Y-%m-%d %H:%M:%S"):
+            try:
+                anchor = _dt.datetime.strptime(latest_ts, fmt)
+                break
+            except ValueError:
+                continue
+        if not anchor:
+            anchor = _dt.datetime.utcnow()
 
     # Query from 24 hours before the latest alert up to the latest alert
     start = (anchor - _dt.timedelta(hours=24)).isoformat()

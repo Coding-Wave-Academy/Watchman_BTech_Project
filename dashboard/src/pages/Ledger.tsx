@@ -120,9 +120,15 @@ export default function Ledger() {
                   </TableCell>
                   <TableCell>
                     {block.polygonTxHash ? (
-                      <a href={`https://amoy.polygonscan.com/tx/${block.polygonTxHash}`} target="_blank" rel="noreferrer" className="text-xs font-mono text-primary hover:underline bg-secondary/50 px-2 py-1 rounded inline-flex items-center gap-1">
-                        {block.polygonTxHash.length > 20 ? `${block.polygonTxHash.slice(0, 8)}...${block.polygonTxHash.slice(-8)}` : block.polygonTxHash} <FaExternalLinkAlt className="h-2 w-2" />
-                      </a>
+                      block.polygonTxHash.startsWith("0x") ? (
+                        <a href={`https://amoy.polygonscan.com/tx/${block.polygonTxHash}`} target="_blank" rel="noreferrer" className="text-xs font-mono text-primary hover:underline bg-secondary/50 px-2 py-1 rounded inline-flex items-center gap-1">
+                          {block.polygonTxHash.length > 20 ? `${block.polygonTxHash.slice(0, 8)}...${block.polygonTxHash.slice(-8)}` : block.polygonTxHash} <FaExternalLinkAlt className="h-2 w-2" />
+                        </a>
+                      ) : (
+                        <span className="text-xs font-mono text-muted-foreground/70 bg-secondary/50 px-2 py-1 rounded inline-flex items-center" title={block.polygonTxHash}>
+                          Demo Mode
+                        </span>
+                      )
                     ) : (
                       <code className="text-xs text-muted-foreground bg-secondary/50 px-2 py-1 rounded">
                         {block.txHash.length > 20 ? `${block.txHash.slice(0, 8)}...${block.txHash.slice(-8)}` : block.txHash}
