@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { FaExclamationTriangle, FaShieldAlt, FaLink, FaHeartbeat, FaDownload, FaSync, FaBolt, FaBug, FaGlobe, FaLock, FaCrosshairs, FaServer } from "react-icons/fa"
+import { FaExclamationTriangle, FaShieldAlt, FaLink, FaHeartbeat, FaDownload, FaSync, FaBolt, FaBug, FaGlobe, FaLock, FaCrosshairs, FaServer, FaExternalLinkAlt } from "react-icons/fa"
 import { fetchAlerts, updateAlertStatus, type Alert } from "@/lib/api"
 
 const THREAT_ICONS: Record<string, typeof FaBolt> = {
@@ -12,6 +12,12 @@ const THREAT_ICONS: Record<string, typeof FaBolt> = {
   "Malware C2": FaGlobe,
   "Port Scan": FaCrosshairs,
   "Brute Force": FaLock,
+}
+
+function severityColor(confidence: number) {
+  if (confidence >= 0.90) return "text-red-400 border-red-400/30 bg-red-400/10"
+  if (confidence >= 0.70) return "text-amber-400 border-amber-400/30 bg-amber-400/10"
+  return "text-blue-400 border-blue-400/30 bg-blue-400/10"
 }
 
 const FILTER_OPTIONS = ["All Threats", "DDoS", "SQL Injection", "Malware", "Brute Force", "Port Scan"]
@@ -168,7 +174,7 @@ export default function Alerts() {
                 return (
                   <TableRow key={a.alert_id} className="border-border h-16">
                     <TableCell className="pl-6">
-                      <Badge variant={isCritical ? "destructive" : "outline"} className={`${!isCritical ? "text-amber-400 border-amber-400/30" : ""} gap-1`}>
+                      <Badge variant="outline" className={`${severityColor(a.confidence)} gap-1`}>
                         <span className={`w-1.5 h-1.5 rounded-full ${isCritical ? "bg-red-400" : "bg-amber-400"}`}></span>
                         {isCritical ? "CRITICAL" : "WARNING"}
                       </Badge>
@@ -189,9 +195,13 @@ export default function Alerts() {
                       </div>
                     </TableCell>
                     <TableCell>
-                      <span className="font-mono text-xs text-muted-foreground bg-secondary/50 px-2 py-1 rounded inline-flex items-center gap-1">
-                        {a.tx_hash ? `${a.tx_hash.slice(0,4)}...${a.tx_hash.slice(-4)}` : "Pending"}
-                      </span>
+                      {a.tx_hash ? (
+                        <a href={`https://polygonscan.com/tx/${a.tx_hash}`} target="_blank" rel="noreferrer" className="font-mono text-xs text-primary hover:underline bg-secondary/50 px-2 py-1 rounded inline-flex items-center gap-1">
+                          {`${a.tx_hash.slice(0,6)}...${a.tx_hash.slice(-4)}`} <FaExternalLinkAlt className="h-2 w-2" />
+                        </a>
+                      ) : (
+                        <span className="font-mono text-xs text-muted-foreground/50 bg-secondary/50 px-2 py-1 rounded">Pending</span>
+                      )}
                     </TableCell>
                     <TableCell className="text-right pr-6">
                       {a.status === "blocked" ? (

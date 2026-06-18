@@ -328,11 +328,13 @@ def get_ledger(limit: int = 50, offset: int = 0) -> dict[str, Any]:
     
     blocks = []
     for row in rows:
+        poly_hash = row["polygon_tx_hash"] or ""
         blocks.append({
             "height": row["height"][:8],
             "timestamp": row["timestamp"],
             "eventType": "Alert Logged",
-            "txHash": row["polygon_tx_hash"] or row["txHash"] or "0x0",
+            "txHash": poly_hash or row["txHash"] or "0x0",
+            "polygonTxHash": poly_hash,
             "nodes": 12
         })
     return {"blocks": blocks, "total": total}
@@ -390,32 +392,52 @@ def get_topology() -> dict[str, Any]:
     }
 
 def get_trends() -> list[dict[str, Any]]:
+    import datetime as _dt
     conn = connect()
+
+    # Find the most recent alert timestamp so the chart always has data
+    latest_row = conn.execute("SELECT MAX(timestamp) FROM alerts_v2").fetchone()
+    latest_ts = latest_row[0] if latest_row and latest_row[0] else None
+
+    if not latest_ts:
+        conn.close()
+        # No alerts at all — return flat zeros for 24 hours
+        now = _dt.datetime.utcnow()
+        return [{"time": (now - _dt.timedelta(hours=i)).strftime("%H:00"), "attacks": 0} for i in range(23, -1, -1)]
+
+    # Parse the latest timestamp
+    for fmt in ("%Y-%m-%dT%H:%M:%S.%f", "%Y-%m-%dT%H:%M:%S", "%Y-%m-%d %H:%M:%S.%f", "%Y-%m-%d %H:%M:%S"):
+        try:
+            anchor = _dt.datetime.strptime(latest_ts, fmt)
+            break
+        except ValueError:
+            continue
+    else:
+        anchor = _dt.datetime.utcnow()
+
+    # Query from 24 hours before the latest alert up to the latest alert
+    start = (anchor - _dt.timedelta(hours=24)).isoformat()
     rows = conn.execute(
         """
-        SELECT strftime('%H:00', timestamp) as time, COUNT(*) as attacks
+        SELECT strftime('%Y-%m-%dT%H', timestamp) as hour_bucket, COUNT(*) as attacks
         FROM alerts_v2
-        WHERE timestamp >= datetime('now', '-24 hours')
-        GROUP BY time
-        ORDER BY time ASC
-        """
+        WHERE timestamp >= ?
+        GROUP BY hour_bucket
+        ORDER BY hour_bucket ASC
+        """,
+        (start,),
     ).fetchall()
     conn.close()
-    
-    # Pad the last 24 hours to ensure the graph always renders
-    import datetime
-    now = datetime.datetime.utcnow()
+
+    data_map = {r["hour_bucket"]: r["attacks"] for r in rows}
     trends = []
-    data_map = {r["time"]: r["attacks"] for r in rows}
-    
     for i in range(23, -1, -1):
-        dt = now - datetime.timedelta(hours=i)
-        hour_str = dt.strftime('%H:00')
+        dt = anchor - _dt.timedelta(hours=i)
+        bucket = dt.strftime("%Y-%m-%dT%H")
         trends.append({
-            "time": hour_str,
-            "attacks": data_map.get(hour_str, 0)
+            "time": dt.strftime("%H:00"),
+            "attacks": data_map.get(bucket, 0),
         })
-        
     return trends
 
 def _decode_alert(row: dict[str, Any]) -> dict[str, Any]:

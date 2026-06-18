@@ -1,8 +1,10 @@
+import { useState } from "react"
 import { Link, Outlet, useLocation } from "react-router-dom"
-import { FaShieldAlt, FaTachometerAlt, FaExclamationTriangle, FaProjectDiagram, FaCube, FaCog, FaBell } from "react-icons/fa"
+import { FaShieldAlt, FaTachometerAlt, FaExclamationTriangle, FaProjectDiagram, FaCube, FaCog, FaBell, FaBars, FaTimes } from "react-icons/fa"
 
 export default function MainLayout() {
   const location = useLocation()
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   
   const navItems = [
     { name: "Dashboard", path: "/dashboard", icon: FaTachometerAlt },
@@ -13,11 +15,21 @@ export default function MainLayout() {
 
   return (
     <div className="flex h-screen bg-background overflow-hidden dark">
+      {/* Mobile Menu Overlay */}
+      {mobileMenuOpen && (
+        <div className="fixed inset-0 bg-background/80 backdrop-blur-sm z-40 md:hidden" onClick={() => setMobileMenuOpen(false)} />
+      )}
+
       {/* Sidebar */}
-      <aside className="w-64 border-r border-border bg-card flex flex-col">
-        <div className="h-16 flex items-center px-6 border-b border-border">
-          <img src="/watchman-logo-dark.png" alt="WatchMan Logo" className="h-8" />
-          <span className="font-bold text-xl tracking-tight ml-3 text-white">WatchMan</span>
+      <aside className={`fixed inset-y-0 left-0 z-50 w-64 border-r border-border bg-card flex flex-col transition-transform duration-300 md:relative md:translate-x-0 ${mobileMenuOpen ? "translate-x-0" : "-translate-x-full"}`}>
+        <div className="h-16 flex items-center justify-between px-6 border-b border-border">
+          <div className="flex items-center">
+            <img src="/watchman-logo-dark.png" alt="WatchMan Logo" className="h-8" />
+            <span className="font-bold text-xl tracking-tight ml-3 text-white">WatchMan</span>
+          </div>
+          <button className="md:hidden text-muted-foreground p-1" onClick={() => setMobileMenuOpen(false)}>
+            <FaTimes className="h-5 w-5" />
+          </button>
         </div>
         
         <div className="p-4 flex-1 overflow-y-auto">
@@ -30,6 +42,7 @@ export default function MainLayout() {
                 <Link
                   key={item.path}
                   to={item.path}
+                  onClick={() => setMobileMenuOpen(false)}
                   className={`flex items-center px-3 py-2.5 rounded-md text-sm font-medium transition-colors ${
                     active 
                       ? "bg-primary/10 text-primary" 
@@ -48,10 +61,14 @@ export default function MainLayout() {
       {/* Main Content */}
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
         {/* Topbar */}
-        <header className="h-16 border-b border-border bg-card/50 backdrop-blur-md flex items-center justify-between px-6 z-10">
-          <div className="flex-1"></div>
-          <div className="flex items-center space-x-4">
-            <span className="px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-500 text-xs font-semibold border border-emerald-500/20">
+        <header className="h-16 border-b border-border bg-card/50 backdrop-blur-md flex items-center justify-between px-4 md:px-6 z-10">
+          <div className="flex items-center">
+            <button className="p-2 mr-2 text-muted-foreground hover:text-foreground rounded-full hover:bg-secondary transition-colors md:hidden" onClick={() => setMobileMenuOpen(true)}>
+              <FaBars className="h-5 w-5" />
+            </button>
+          </div>
+          <div className="flex items-center space-x-2 md:space-x-4">
+            <span className="hidden sm:inline-block px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-500 text-xs font-semibold border border-emerald-500/20">
               SYSTEM SECURE
             </span>
             <button className="p-2 text-muted-foreground hover:text-foreground rounded-full hover:bg-secondary transition-colors" onClick={() => alert("Notifications coming soon")}>

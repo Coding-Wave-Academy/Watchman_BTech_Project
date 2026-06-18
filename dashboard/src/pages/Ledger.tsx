@@ -2,7 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { FaCube, FaClock, FaCheckCircle, FaChevronLeft, FaChevronRight, FaFilter } from "react-icons/fa"
+import { FaCube, FaClock, FaCheckCircle, FaChevronLeft, FaChevronRight, FaFilter, FaExternalLinkAlt } from "react-icons/fa"
 import { useState, useEffect, useCallback } from "react"
 import { fetchSystemLedger } from "@/lib/api"
 
@@ -119,9 +119,15 @@ export default function Ledger() {
                     </Badge>
                   </TableCell>
                   <TableCell>
-                    <code className="text-xs text-muted-foreground bg-secondary/50 px-2 py-1 rounded">
-                      {block.txHash.length > 20 ? `${block.txHash.slice(0, 8)}...${block.txHash.slice(-8)}` : block.txHash}
-                    </code>
+                    {block.polygonTxHash ? (
+                      <a href={`https://polygonscan.com/tx/${block.polygonTxHash}`} target="_blank" rel="noreferrer" className="text-xs font-mono text-primary hover:underline bg-secondary/50 px-2 py-1 rounded inline-flex items-center gap-1">
+                        {block.polygonTxHash.length > 20 ? `${block.polygonTxHash.slice(0, 8)}...${block.polygonTxHash.slice(-8)}` : block.polygonTxHash} <FaExternalLinkAlt className="h-2 w-2" />
+                      </a>
+                    ) : (
+                      <code className="text-xs text-muted-foreground bg-secondary/50 px-2 py-1 rounded">
+                        {block.txHash.length > 20 ? `${block.txHash.slice(0, 8)}...${block.txHash.slice(-8)}` : block.txHash}
+                      </code>
+                    )}
                   </TableCell>
                   <TableCell>
                     <div className="flex items-center gap-1.5 text-sm">

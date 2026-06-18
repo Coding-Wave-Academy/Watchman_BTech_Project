@@ -9,9 +9,9 @@ import { fetchAlerts, fetchAlertStats, fetchSystemStatus, fetchAlertTrends, conn
 import { Link } from "react-router-dom"
 
 function severityColor(confidence: number) {
-  if (confidence >= 90) return "destructive"
-  if (confidence >= 70) return "outline"
-  return "secondary"
+  if (confidence >= 0.90) return "text-red-400 border-red-400/30 bg-red-400/10"
+  if (confidence >= 0.70) return "text-amber-400 border-amber-400/30 bg-amber-400/10"
+  return "text-blue-400 border-blue-400/30 bg-blue-400/10"
 }
 
 function severityLabel(confidence: number) {
@@ -189,7 +189,13 @@ export default function Dashboard() {
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center justify-between mb-0.5">
-                    <span className="text-[11px] font-mono text-muted-foreground">Block {alert.tx_hash ? `${alert.tx_hash.substring(0, 8)}...` : 'Pending'}</span>
+                    {alert.tx_hash ? (
+                      <a href={`https://polygonscan.com/tx/${alert.tx_hash}`} target="_blank" rel="noreferrer" className="text-xs font-mono text-muted-foreground hover:text-primary transition-colors flex items-center gap-1">
+                        {alert.tx_hash.substring(0, 16)}... <FaExternalLinkAlt className="h-2 w-2" />
+                      </a>
+                    ) : (
+                      <span className="text-[11px] font-mono text-muted-foreground">Pending...</span>
+                    )}
                     <span className="text-[10px] text-muted-foreground">{new Date(alert.timestamp).toLocaleTimeString()}</span>
                   </div>
                   <div className="text-sm font-medium">{alert.attack_type || 'Anomaly'} Detected</div>
@@ -241,7 +247,7 @@ export default function Dashboard() {
                   <TableCell className="font-mono text-sm">{a.src_ip}</TableCell>
                   <TableCell className="text-muted-foreground">{a.dst_ip}</TableCell>
                   <TableCell>
-                    <Badge variant={severityColor(a.confidence) as "destructive" | "outline" | "secondary"} className={a.confidence >= 0.70 && a.confidence < 0.90 ? "text-amber-400 border-amber-400/30" : ""}>
+                    <Badge variant="outline" className={severityColor(a.confidence)}>
                       {severityLabel(a.confidence)}
                     </Badge>
                   </TableCell>
