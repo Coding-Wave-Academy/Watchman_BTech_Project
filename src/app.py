@@ -25,8 +25,12 @@ config = load_config()
 docs_url = "/docs" if config["api"].get("debug") else None
 openapi_url = "/openapi.json" if config["api"].get("debug") else None
 
+_main_loop: asyncio.AbstractEventLoop | None = None
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    global _main_loop
+    _main_loop = asyncio.get_running_loop()
     db.init_db()
     auth.bootstrap_admin()
     anchor_service.start()
@@ -75,11 +79,8 @@ def _broadcast_alert(alert: dict[str, Any]) -> None:
         for ws in stale:
             websocket_clients.discard(ws)
 
-    try:
-        loop = asyncio.get_running_loop()
-        loop.create_task(send())
-    except RuntimeError:
-        pass
+    if _main_loop and not _main_loop.is_closed():
+        asyncio.run_coroutine_threadsafe(send(), _main_loop)
 
 
 detection_service.broadcaster = _broadcast_alert
