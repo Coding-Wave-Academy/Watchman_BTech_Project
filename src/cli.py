@@ -42,7 +42,7 @@ def _read_token() -> str | None:
         console.print("[yellow]Warning: Could not read authentication token due to permission denied. Some commands may fail. Try running with sudo.[/yellow]")
         return None
 
-def _api(path: str, method: str = "GET", body: dict[str, Any] | None = None) -> dict[str, Any]:
+def _api_headers() -> dict[str, str]:
     try:
         import requests
     except Exception as exc:
@@ -60,10 +60,22 @@ def _api(path: str, method: str = "GET", body: dict[str, Any] | None = None) -> 
             login_resp = requests.post(_api_base() + "/auth/login", json=login_body, timeout=10)
             if login_resp.status_code == 200:
                 token = login_resp.json().get("token")
+                try:
+                    _token_path().write_text(token, encoding="utf-8")
+                except Exception:
+                    pass
         except Exception:
             pass
     if token:
         headers["Authorization"] = f"Bearer {token}"
+    return headers
+
+def _api(path: str, method: str = "GET", body: dict[str, Any] | None = None) -> dict[str, Any]:
+    try:
+        import requests
+    except Exception as exc:
+        raise typer.BadParameter("requests is required for API-backed CLI commands") from exc
+    headers = _api_headers()
     response = requests.request(method, _api_base() + path, json=body, headers=headers, timeout=10)
     if response.status_code == 401:
         # Token might be expired, try to auto-login and retry
