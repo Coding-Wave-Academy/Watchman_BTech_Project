@@ -65,6 +65,26 @@ def _api(path: str, method: str = "GET", body: dict[str, Any] | None = None) -> 
     if token:
         headers["Authorization"] = f"Bearer {token}"
     response = requests.request(method, _api_base() + path, json=body, headers=headers, timeout=10)
+    if response.status_code == 401:
+        # Token might be expired, try to auto-login and retry
+        try:
+            cfg = load_config()
+            login_body = {
+                "username": cfg["bootstrap"]["admin_username"],
+                "password": cfg["bootstrap"]["admin_password"],
+            }
+            login_resp = requests.post(_api_base() + "/auth/login", json=login_body, timeout=10)
+            if login_resp.status_code == 200:
+                token = login_resp.json().get("token")
+                try:
+                    _token_path().write_text(token, encoding="utf-8")
+                except Exception:
+                    pass
+                headers["Authorization"] = f"Bearer {token}"
+                response = requests.request(method, _api_base() + path, json=body, headers=headers, timeout=10)
+        except Exception:
+            pass
+
     if response.status_code >= 400:
         raise typer.BadParameter(f"{response.status_code}: {response.text}")
     return response.json()

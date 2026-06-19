@@ -80,16 +80,57 @@ class AnchorService:
         chain_cfg = self.config["blockchain"]
         if not chain_cfg.get("enabled") or chain_cfg.get("demo_mode", True):
             return f"demo:{batch_id}:{root[:16]}"
-        private_key = __import__("os").getenv("WATCHMAN_PRIVATE_KEY")
+        
+        import os
+        # Manual dotenv parsing
+        env_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), '.env')
+        if os.path.exists(env_path):
+            with open(env_path) as f:
+                for line in f:
+                    if '=' in line and not line.strip().startswith('#'):
+                        k, v = line.strip().split('=', 1)
+                        os.environ[k] = v.strip().strip('"').strip("'")
+
+        private_key = os.getenv("WATCHMAN_PRIVATE_KEY")
         if not private_key:
             raise RuntimeError("WATCHMAN_PRIVATE_KEY is required when blockchain.enabled=true")
+        
         try:
             from web3 import Web3
+            from web3.middleware import ExtraDataToPOAMiddleware
         except Exception as exc:
-            raise RuntimeError("web3.py is required for live Polygon anchoring") from exc
-        w3 = Web3(Web3.HTTPProvider(chain_cfg["polygon_rpc_url"]))
+            raise RuntimeError("web3.py is required for live Celo anchoring") from exc
+        
+        w3 = Web3(Web3.HTTPProvider(chain_cfg.get("celo_rpc_url", "https://forno.celo-sepolia.celo-testnet.org")))
+        w3.middleware_onion.inject(ExtraDataToPOAMiddleware, layer=0)
+        
         if not w3.is_connected():
-            raise RuntimeError("Cannot connect to Polygon RPC endpoint")
-        # Contract wire-up is intentionally conservative: demo mode is the default, and
-        # live mode requires a deployed contract with logRoot(bytes32,uint256,string).
-        raise RuntimeError("Live Polygon anchoring needs deployed logRoot contract ABI wiring")
+            raise RuntimeError("Cannot connect to Celo RPC endpoint")
+
+        contract_addr = chain_cfg.get("contract_address")
+        if not contract_addr or not contract_addr.startswith("0x"):
+            raise RuntimeError("Valid 0x contract_address is required in watchman.config.json")
+        
+        import json
+        abi_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "blockchain", "build", "contracts", "WatchmanAnchor.json")
+        with open(abi_path) as f:
+            abi = json.load(f)["abi"]
+
+        account = w3.eth.account.from_key(private_key)
+        contract = w3.eth.contract(address=contract_addr, abi=abi)
+
+        tx = contract.functions.logRoot(batch_id, alert_count, root).build_transaction({
+            'from': account.address,
+            'nonce': w3.eth.get_transaction_count(account.address),
+            'gas': 2000000,
+            'gasPrice': w3.eth.gas_price
+        })
+
+        signed_tx = w3.eth.account.sign_transaction(tx, private_key=private_key)
+        tx_hash = w3.eth.send_raw_transaction(signed_tx.raw_transaction)
+        receipt = w3.eth.wait_for_transaction_receipt(tx_hash)
+        
+        if receipt.status != 1:
+            raise RuntimeError("Transaction failed on-chain")
+            
+        return tx_hash.hex()

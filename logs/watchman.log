@@ -263,3 +263,104 @@ IPS module test complete.
 [2026-06-16 04:09:37] [WARNING] [predict] [ALERT] 2026-06-16T03:09:37.582401 | Type: Anomaly (HIGH) | From: 192.168.81.167:54511 -> 34.54.84.110:443 | Packets: 2 | RF Conf: 82.00% | Note: RF low confidence=0.82
 [2026-06-16 04:09:41] [WARNING] [predict] [ALERT] 2026-06-16T03:09:41.391270 | Type: Anomaly (HIGH) | From: 192.168.81.167:62004 -> 199.232.210.172:80 | Packets: 1573 | RF Conf: 76.00% | Note: RF low confidence=0.76
 [2026-06-16 04:09:42] [WARNING] [predict] [ALERT] 2026-06-16T03:09:42.039860 | Type: Anomaly (HIGH) | From: 192.168.81.167:62003 -> 199.232.214.172:80 | Packets: 1511 | RF Conf: 78.00% | Note: RF low confidence=0.78
+[2026-06-19 04:22:01] [INFO] [predict] Loading models...
+[2026-06-19 04:22:13] [INFO] [predict] Random Forest    : loaded (100 trees)
+[2026-06-19 04:22:13] [INFO] [predict] Isolation Forest : loaded
+[2026-06-19 04:22:13] [INFO] [predict] Label classes    : ['Anomaly', 'BruteForce', 'DoS', 'Normal', 'PortScan']
+[2026-06-19 04:22:13] [INFO] [predict] Starting live capture...
+[2026-06-19 04:22:13] [INFO] [predict] Interface : default
+[2026-06-19 04:23:06] [INFO] [predict] Loading models...
+[2026-06-19 04:23:09] [INFO] [predict] Random Forest    : loaded (100 trees)
+[2026-06-19 04:23:09] [INFO] [predict] Isolation Forest : loaded
+[2026-06-19 04:23:09] [INFO] [predict] Label classes    : ['Anomaly', 'BruteForce', 'DoS', 'Normal', 'PortScan']
+[2026-06-19 04:23:09] [INFO] [predict] Starting live capture...
+[2026-06-19 04:23:09] [INFO] [predict] Interface : default
+[2026-06-19 04:23:51] [WARNING] [predict] [ALERT] 2026-06-19T03:23:51.253955 | Type: Anomaly (HIGH) | From: 192.168.81.167:63925 -> 34.168.43.76:443 | Packets: 9 | RF Conf: 84.00% | Note: RF low confidence=0.84
+[2026-06-19 04:23:51] [WARNING] [predict] [ALERT] 2026-06-19T03:23:51.834487 | Type: Anomaly (HIGH) | From: 34.168.43.76:443 -> 192.168.81.167:63925 | Packets: 11 | RF Conf: 83.00% | Note: RF low confidence=0.83
+[2026-06-19 04:24:04] [WARNING] [predict] [ALERT] 2026-06-19T03:24:04.100196 | Type: Anomaly (HIGH) | From: 192.168.81.167:57324 -> 184.73.118.133:443 | Packets: 26 | RF Conf: 80.00% | Note: RF low confidence=0.80
+[2026-06-19 04:24:04] [WARNING] [predict] [ALERT] 2026-06-19T03:24:04.445185 | Type: Anomaly (HIGH) | From: 184.73.118.133:443 -> 192.168.81.167:57324 | Packets: 34 | RF Conf: 79.00% | Note: RF low confidence=0.79
+[2026-06-19 04:24:04] [WARNING] [predict] [ALERT] 2026-06-19T03:24:04.604653 | Type: Anomaly (HIGH) | From: 192.168.81.167:52658 -> 52.71.237.94:443 | Packets: 2 | RF Conf: 84.00% | Note: RF low confidence=0.84
+[2026-06-19 04:24:08] [WARNING] [predict] [ALERT] 2026-06-19T03:24:08.046261 | Type: Anomaly (HIGH) | From: 52.1.212.189:443 -> 192.168.81.167:64662 | Packets: 9 | RF Conf: 83.00% | Note: RF low confidence=0.83
+[2026-06-19 04:24:08] [WARNING] [predict] [ALERT] 2026-06-19T03:24:08.592813 | Type: Anomaly (HIGH) | From: 176.97.122.245:85 -> 192.168.81.167:56364 | Packets: 3 | RF Conf: 81.00% | Note: RF low confidence=0.81
+[2026-06-19 04:24:08] [WARNING] [predict] [ALERT] 2026-06-19T03:24:08.679737 | Type: Anomaly (HIGH) | From: 192.168.81.167:56364 -> 176.97.122.245:85 | Packets: 3 | RF Conf: 83.00% | Note: RF low confidence=0.83
+[2026-06-19 04:24:14] [WARNING] [predict] [ALERT] 2026-06-19T03:24:14.813344 | Type: Anomaly (HIGH) | From: 192.168.81.167:49872 -> 104.18.31.173:443 | Packets: 12 | RF Conf: 82.00% | Note: RF low confidence=0.82
+[2026-06-19 04:24:17] [WARNING] [predict] [ALERT] 2026-06-19T03:24:17.726982 | Type: Anomaly (HIGH) | From: 192.168.81.167:60937 -> 104.18.30.173:443 | Packets: 19 | RF Conf: 84.00% | Note: RF low confidence=0.84
+[2026-06-19 04:24:21] [WARNING] [predict] [ALERT] 2026-06-19T03:24:21.622816 | Type: Anomaly (HIGH) | From: 192.168.81.167:63925 -> 34.168.43.76:443 | Packets: 11 | RF Conf: 81.00% | Note: RF low confidence=0.81
+[2026-06-19 04:24:34] [WARNING] [predict] [ALERT] 2026-06-19T03:24:34.256509 | Type: Anomaly (HIGH) | From: 192.168.81.167:57324 -> 184.73.118.133:443 | Packets: 26 | RF Conf: 80.00% | Note: RF low confidence=0.80
+[2026-06-19 04:24:34] [WARNING] [predict] [ALERT] 2026-06-19T03:24:34.696575 | Type: Anomaly (HIGH) | From: 184.73.118.133:443 -> 192.168.81.167:57324 | Packets: 43 | RF Conf: 78.00% | Note: RF low confidence=0.78
+[2026-06-19 04:24:43] [WARNING] [predict] [ALERT] 2026-06-19T03:24:43.411483 | Type: Anomaly (HIGH) | From: 192.168.81.167:51254 -> 192.168.81.28:53 | Packets: 2 | RF Conf: 75.00% | Note: RF low confidence=0.75
+[2026-06-19 04:24:48] [WARNING] [predict] [ALERT] 2026-06-19T03:24:48.263562 | Type: Anomaly (HIGH) | From: 192.168.81.167:59560 -> 167.82.49.55:443 | Packets: 10 | RF Conf: 84.00% | Note: RF low confidence=0.84
+[2026-06-19 04:24:51] [WARNING] [predict] [ALERT] 2026-06-19T03:24:51.462941 | Type: Anomaly (HIGH) | From: 192.168.81.167:60766 -> 34.238.97.13:443 | Packets: 29 | RF Conf: 84.00% | Note: RF low confidence=0.84
+[2026-06-19 04:24:51] [WARNING] [predict] [ALERT] 2026-06-19T03:24:51.724144 | Type: Anomaly (HIGH) | From: 34.238.97.13:443 -> 192.168.81.167:60766 | Packets: 19 | RF Conf: 80.00% | Note: RF low confidence=0.80
+[2026-06-19 04:24:51] [WARNING] [predict] [ALERT] 2026-06-19T03:24:51.981246 | Type: Anomaly (HIGH) | From: 192.168.81.167:63925 -> 34.168.43.76:443 | Packets: 12 | RF Conf: 80.00% | Note: RF low confidence=0.80
+[2026-06-19 04:24:52] [WARNING] [predict] [ALERT] 2026-06-19T03:24:52.875419 | Type: Anomaly (HIGH) | From: 192.168.81.167:51875 -> 167.82.49.55:443 | Packets: 10 | RF Conf: 84.00% | Note: RF low confidence=0.84
+[2026-06-19 04:24:59] [WARNING] [predict] [ALERT] 2026-06-19T03:24:59.891489 | Type: Anomaly (HIGH) | From: 176.97.122.245:85 -> 192.168.81.167:56364 | Packets: 5 | RF Conf: 84.00% | Note: RF low confidence=0.84
+[2026-06-19 04:25:00] [WARNING] [predict] [ALERT] 2026-06-19T03:25:00.022433 | Type: Anomaly (HIGH) | From: 192.168.81.167:56364 -> 176.97.122.245:85 | Packets: 5 | RF Conf: 76.00% | Note: RF low confidence=0.76
+[2026-06-19 04:25:00] [WARNING] [predict] [ALERT] 2026-06-19T03:25:00.177616 | Type: Anomaly (HIGH) | From: 192.168.81.167:55162 -> 192.168.81.28:53 | Packets: 2 | RF Conf: 74.00% | Note: RF low confidence=0.74
+[2026-06-19 04:25:07] [WARNING] [predict] [ALERT] 2026-06-19T03:25:07.243262 | Type: Anomaly (HIGH) | From: 192.168.81.167:57324 -> 184.73.118.133:443 | Packets: 33 | RF Conf: 81.00% | Note: RF low confidence=0.81
+[2026-06-19 04:25:08] [WARNING] [predict] [ALERT] 2026-06-19T03:25:08.048041 | Type: Anomaly (HIGH) | From: 184.73.118.133:443 -> 192.168.81.167:57324 | Packets: 29 | RF Conf: 80.00% | Note: RF low confidence=0.80
+[2026-06-19 04:25:08] [WARNING] [predict] [ALERT] 2026-06-19T03:25:08.387767 | Type: Anomaly (HIGH) | From: 52.1.212.189:443 -> 192.168.81.167:64662 | Packets: 9 | RF Conf: 83.00% | Note: RF low confidence=0.83
+[2026-06-19 04:25:18] [WARNING] [predict] [ALERT] 2026-06-19T03:25:18.451026 | Type: Anomaly (HIGH) | From: 192.168.81.167:59102 -> 167.82.49.55:443 | Packets: 14 | RF Conf: 82.00% | Note: RF low confidence=0.82
+[2026-06-19 04:25:18] [WARNING] [predict] [ALERT] 2026-06-19T03:25:18.587451 | Type: Anomaly (HIGH) | From: 167.82.49.55:443 -> 192.168.81.167:59102 | Packets: 19 | RF Conf: 84.00% | Note: RF low confidence=0.84
+[2026-06-19 04:25:18] [WARNING] [predict] [ALERT] 2026-06-19T03:25:18.719666 | Type: Anomaly (HIGH) | From: 192.168.81.167:55544 -> 98.87.132.107:443 | Packets: 22 | RF Conf: 81.00% | Note: RF low confidence=0.81
+[2026-06-19 04:25:18] [WARNING] [predict] [ALERT] 2026-06-19T03:25:18.865115 | Type: Anomaly (HIGH) | From: 98.87.132.107:443 -> 192.168.81.167:55544 | Packets: 20 | RF Conf: 82.00% | Note: RF low confidence=0.82
+[2026-06-19 04:25:19] [WARNING] [predict] [ALERT] 2026-06-19T03:25:19.762422 | Type: Anomaly (HIGH) | From: 192.168.81.167:55109 -> 52.20.213.57:443 | Packets: 29 | RF Conf: 84.00% | Note: RF low confidence=0.84
+[2026-06-19 04:25:19] [WARNING] [predict] [ALERT] 2026-06-19T03:25:19.870454 | Type: Anomaly (HIGH) | From: 52.20.213.57:443 -> 192.168.81.167:55109 | Packets: 22 | RF Conf: 83.00% | Note: RF low confidence=0.83
+[2026-06-19 04:25:21] [WARNING] [predict] [ALERT] 2026-06-19T03:25:21.569896 | Type: Anomaly (HIGH) | From: 34.168.43.76:443 -> 192.168.81.167:63925 | Packets: 9 | RF Conf: 83.00% | Note: RF low confidence=0.83
+[2026-06-19 04:25:34] [WARNING] [predict] [ALERT] 2026-06-19T03:25:34.414069 | Type: Anomaly (HIGH) | From: 192.168.81.167:57324 -> 184.73.118.133:443 | Packets: 35 | RF Conf: 76.00% | Note: RF low confidence=0.76
+[2026-06-19 04:25:34] [WARNING] [predict] [ALERT] 2026-06-19T03:25:34.988237 | Type: Anomaly (HIGH) | From: 184.73.118.133:443 -> 192.168.81.167:57324 | Packets: 50 | RF Conf: 82.00% | Note: RF low confidence=0.82
+[2026-06-19 04:25:38] [WARNING] [predict] [ALERT] 2026-06-19T03:25:38.316685 | Type: Anomaly (HIGH) | From: 52.1.212.189:443 -> 192.168.81.167:64662 | Packets: 14 | RF Conf: 81.00% | Note: RF low confidence=0.81
+[2026-06-19 04:25:43] [WARNING] [predict] [ALERT] 2026-06-19T03:25:43.047732 | Type: Anomaly (HIGH) | From: 192.168.81.167:58745 -> 216.239.38.223:443 | Packets: 17 | RF Conf: 81.00% | Note: RF low confidence=0.81
+[2026-06-19 04:25:43] [WARNING] [predict] [ALERT] 2026-06-19T03:25:43.183980 | Type: Anomaly (HIGH) | From: 216.239.38.223:443 -> 192.168.81.167:58745 | Packets: 21 | RF Conf: 84.00% | Note: RF low confidence=0.84
+[2026-06-19 04:25:48] [WARNING] [predict] [ALERT] 2026-06-19T03:25:48.380991 | Type: Anomaly (HIGH) | From: 192.168.81.167:54414 -> 192.168.81.28:53 | Packets: 2 | RF Conf: 76.00% | Note: RF low confidence=0.76
+[2026-06-19 04:25:52] [WARNING] [predict] [ALERT] 2026-06-19T03:25:52.261936 | Type: Anomaly (HIGH) | From: 192.168.81.167:63925 -> 34.168.43.76:443 | Packets: 12 | RF Conf: 81.00% | Note: RF low confidence=0.81
+[2026-06-19 04:25:54] [WARNING] [predict] [ALERT] 2026-06-19T03:25:54.640064 | Type: Anomaly (HIGH) | From: 192.168.81.167:61837 -> 34.1.52.129:443 | Packets: 9 | RF Conf: 84.00% | Note: RF low confidence=0.84
+[2026-06-19 04:25:58] [WARNING] [predict] [ALERT] 2026-06-19T03:25:58.189112 | Type: Anomaly (HIGH) | From: 192.168.81.167:56486 -> 34.82.207.224:443 | Packets: 13 | RF Conf: 83.00% | Note: RF low confidence=0.83
+[2026-06-19 04:25:58] [WARNING] [predict] [ALERT] 2026-06-19T03:25:58.939744 | Type: Anomaly (HIGH) | From: 216.239.32.223:443 -> 192.168.81.167:49198 | Packets: 13 | RF Conf: 81.00% | Note: RF low confidence=0.81
+[2026-06-19 04:26:04] [WARNING] [predict] [ALERT] 2026-06-19T03:26:04.453848 | Type: Anomaly (HIGH) | From: 192.168.81.167:57324 -> 184.73.118.133:443 | Packets: 34 | RF Conf: 81.00% | Note: RF low confidence=0.81
+[2026-06-19 04:26:04] [WARNING] [predict] [ALERT] 2026-06-19T03:26:04.554469 | Type: Anomaly (HIGH) | From: 176.97.122.245:85 -> 192.168.81.167:56364 | Packets: 2 | RF Conf: 78.00% | Note: RF low confidence=0.78
+[2026-06-19 04:26:04] [WARNING] [predict] [ALERT] 2026-06-19T03:26:04.674873 | Type: Anomaly (HIGH) | From: 192.168.81.167:56364 -> 176.97.122.245:85 | Packets: 2 | RF Conf: 75.00% | Note: RF low confidence=0.75
+[2026-06-19 04:26:04] [WARNING] [predict] [ALERT] 2026-06-19T03:26:04.773793 | Type: Anomaly (HIGH) | From: 192.168.81.167:63740 -> 192.168.81.28:53 | Packets: 2 | RF Conf: 75.00% | Note: RF low confidence=0.75
+[2026-06-19 04:26:06] [WARNING] [predict] [ALERT] 2026-06-19T03:26:06.128048 | Type: Anomaly (HIGH) | From: 184.73.118.133:443 -> 192.168.81.167:57324 | Packets: 35 | RF Conf: 78.00% | Note: RF low confidence=0.78
+[2026-06-19 04:26:18] [WARNING] [predict] [ALERT] 2026-06-19T03:26:18.570591 | Type: Anomaly (HIGH) | From: 192.168.81.167:49872 -> 104.18.31.173:443 | Packets: 12 | RF Conf: 81.00% | Note: RF low confidence=0.81
+[2026-06-19 04:26:34] [WARNING] [predict] [ALERT] 2026-06-19T03:26:34.525045 | Type: Anomaly (HIGH) | From: 192.168.81.167:57324 -> 184.73.118.133:443 | Packets: 28 | RF Conf: 80.00% | Note: RF low confidence=0.80
+[2026-06-19 04:26:35] [WARNING] [predict] [ALERT] 2026-06-19T03:26:35.347137 | Type: Anomaly (HIGH) | From: 184.73.118.133:443 -> 192.168.81.167:57324 | Packets: 27 | RF Conf: 81.00% | Note: RF low confidence=0.81
+[2026-06-19 04:26:38] [WARNING] [predict] [ALERT] 2026-06-19T03:26:38.055761 | Type: Anomaly (HIGH) | From: 52.1.212.189:443 -> 192.168.81.167:64662 | Packets: 11 | RF Conf: 80.00% | Note: RF low confidence=0.80
+[2026-06-19 04:26:41] [WARNING] [predict] [ALERT] 2026-06-19T03:26:41.136946 | Type: Anomaly (HIGH) | From: 176.97.122.245:85 -> 192.168.81.167:56364 | Packets: 4 | RF Conf: 82.00% | Note: RF low confidence=0.82
+[2026-06-19 04:26:41] [WARNING] [predict] [ALERT] 2026-06-19T03:26:41.242401 | Type: Anomaly (HIGH) | From: 192.168.81.167:56364 -> 176.97.122.245:85 | Packets: 4 | RF Conf: 76.00% | Note: RF low confidence=0.76
+[2026-06-19 04:26:51] [WARNING] [predict] [ALERT] 2026-06-19T03:26:51.958040 | Type: Anomaly (HIGH) | From: 192.168.81.167:49338 -> 192.168.81.28:53 | Packets: 2 | RF Conf: 75.00% | Note: RF low confidence=0.75
+[2026-06-19 04:26:52] [WARNING] [predict] [ALERT] 2026-06-19T03:26:52.766474 | Type: Anomaly (HIGH) | From: 192.168.81.167:63925 -> 34.168.43.76:443 | Packets: 12 | RF Conf: 80.00% | Note: RF low confidence=0.80
+[2026-06-19 04:26:54] [WARNING] [predict] [ALERT] 2026-06-19T03:26:54.609685 | Type: Anomaly (HIGH) | From: 192.168.81.167:54687 -> 34.82.207.224:443 | Packets: 2 | RF Conf: 84.00% | Note: RF low confidence=0.84
+[2026-06-19 04:27:02] [WARNING] [predict] [ALERT] 2026-06-19T03:27:02.847101 | Type: Anomaly (HIGH) | From: 192.168.81.167:53543 -> 192.168.81.28:53 | Packets: 2 | RF Conf: 74.00% | Note: RF low confidence=0.74
+[2026-06-19 04:27:04] [WARNING] [predict] [ALERT] 2026-06-19T03:27:04.734484 | Type: Anomaly (HIGH) | From: 192.168.81.167:57324 -> 184.73.118.133:443 | Packets: 36 | RF Conf: 81.00% | Note: RF low confidence=0.81
+[2026-06-19 04:27:05] [WARNING] [predict] [ALERT] 2026-06-19T03:27:05.640895 | Type: Anomaly (HIGH) | From: 184.73.118.133:443 -> 192.168.81.167:57324 | Packets: 33 | RF Conf: 78.00% | Note: RF low confidence=0.78
+[2026-06-19 04:27:08] [WARNING] [predict] [ALERT] 2026-06-19T03:27:08.236964 | Type: Anomaly (HIGH) | From: 52.1.212.189:443 -> 192.168.81.167:64662 | Packets: 9 | RF Conf: 83.00% | Note: RF low confidence=0.83
+[2026-06-19 04:27:23] [WARNING] [predict] [ALERT] 2026-06-19T03:27:23.986926 | Type: Anomaly (HIGH) | From: 192.168.81.167:59102 -> 167.82.49.55:443 | Packets: 3 | RF Conf: 84.00% | Note: RF low confidence=0.84
+[2026-06-19 04:27:34] [WARNING] [predict] [ALERT] 2026-06-19T03:27:34.996173 | Type: Anomaly (HIGH) | From: 192.168.81.167:57324 -> 184.73.118.133:443 | Packets: 24 | RF Conf: 80.00% | Note: RF low confidence=0.80
+[2026-06-19 04:27:38] [WARNING] [predict] [ALERT] 2026-06-19T03:27:38.379036 | Type: Anomaly (HIGH) | From: 52.1.212.189:443 -> 192.168.81.167:64662 | Packets: 16 | RF Conf: 81.00% | Note: RF low confidence=0.81
+[2026-06-19 04:27:38] [WARNING] [predict] [ALERT] 2026-06-19T03:27:38.500991 | Type: Anomaly (HIGH) | From: 192.168.81.167:64662 -> 52.1.212.189:443 | Packets: 13 | RF Conf: 84.00% | Note: RF low confidence=0.84
+[2026-06-19 04:27:44] [WARNING] [predict] [ALERT] 2026-06-19T03:27:44.202903 | Type: Anomaly (HIGH) | From: 176.97.122.245:85 -> 192.168.81.167:56364 | Packets: 5 | RF Conf: 84.00% | Note: RF low confidence=0.84
+[2026-06-19 04:27:44] [WARNING] [predict] [ALERT] 2026-06-19T03:27:44.307311 | Type: Anomaly (HIGH) | From: 192.168.81.167:56364 -> 176.97.122.245:85 | Packets: 5 | RF Conf: 76.00% | Note: RF low confidence=0.76
+[2026-06-19 04:27:46] [WARNING] [predict] [ALERT] 2026-06-19T03:27:46.785905 | Type: Anomaly (HIGH) | From: 192.168.81.167:50018 -> 167.82.49.55:443 | Packets: 10 | RF Conf: 84.00% | Note: RF low confidence=0.84
+[2026-06-19 04:27:51] [WARNING] [predict] [ALERT] 2026-06-19T03:27:51.743177 | Type: Anomaly (HIGH) | From: 192.168.81.167:63925 -> 34.168.43.76:443 | Packets: 12 | RF Conf: 81.00% | Note: RF low confidence=0.81
+[2026-06-19 04:28:02] [INFO] [ips] [IPS:SIM] Would run: iptables -I WATCHMAN_IPS -s 127.0.0.1 -j DROP
+[2026-06-19 04:28:02] [WARNING] [ips] [IPS] BLOCKED 127.0.0.1 | reason=Alert legacy-1834 marked as blocked | mode=simulate
+[2026-06-19 04:28:04] [WARNING] [predict] [ALERT] 2026-06-19T03:28:04.478077 | Type: Anomaly (HIGH) | From: 184.73.118.133:443 -> 192.168.81.167:57324 | Packets: 32 | RF Conf: 78.00% | Note: RF low confidence=0.78
+[2026-06-19 04:28:04] [WARNING] [predict] [ALERT] 2026-06-19T03:28:04.719772 | Type: Anomaly (HIGH) | From: 192.168.81.167:57324 -> 184.73.118.133:443 | Packets: 27 | RF Conf: 80.00% | Note: RF low confidence=0.80
+[2026-06-19 04:28:17] [WARNING] [predict] [ALERT] 2026-06-19T03:28:17.971170 | Type: Anomaly (HIGH) | From: 192.168.81.167:49872 -> 104.18.31.173:443 | Packets: 8 | RF Conf: 83.00% | Note: RF low confidence=0.83
+[2026-06-19 04:28:21] [WARNING] [predict] [ALERT] 2026-06-19T03:28:21.859302 | Type: Anomaly (HIGH) | From: 192.168.81.167:63925 -> 34.168.43.76:443 | Packets: 9 | RF Conf: 84.00% | Note: RF low confidence=0.84
+[2026-06-19 04:28:22] [WARNING] [predict] [ALERT] 2026-06-19T03:28:22.125971 | Type: Anomaly (HIGH) | From: 192.168.81.167:61527 -> 54.205.230.48:443 | Packets: 2 | RF Conf: 81.00% | Note: RF low confidence=0.81
+[2026-06-19 04:28:34] [WARNING] [predict] [ALERT] 2026-06-19T03:28:34.475377 | Type: Anomaly (HIGH) | From: 184.73.118.133:443 -> 192.168.81.167:57324 | Packets: 33 | RF Conf: 79.00% | Note: RF low confidence=0.79
+[2026-06-19 04:28:34] [WARNING] [predict] [ALERT] 2026-06-19T03:28:34.824856 | Type: Anomaly (HIGH) | From: 192.168.81.167:57324 -> 184.73.118.133:443 | Packets: 30 | RF Conf: 81.00% | Note: RF low confidence=0.81
+[2026-06-19 04:28:37] [WARNING] [predict] [ALERT] 2026-06-19T03:28:37.730076 | Type: Anomaly (HIGH) | From: 176.97.122.245:85 -> 192.168.81.167:56364 | Packets: 6 | RF Conf: 84.00% | Note: RF low confidence=0.84
+[2026-06-19 04:28:37] [WARNING] [predict] [ALERT] 2026-06-19T03:28:37.836774 | Type: Anomaly (HIGH) | From: 192.168.81.167:56364 -> 176.97.122.245:85 | Packets: 6 | RF Conf: 75.00% | Note: RF low confidence=0.75
+[2026-06-19 04:28:37] [WARNING] [predict] [ALERT] 2026-06-19T03:28:37.940662 | Type: Anomaly (HIGH) | From: 192.168.81.167:64662 -> 52.1.212.189:443 | Packets: 11 | RF Conf: 84.00% | Note: RF low confidence=0.84
+[2026-06-19 04:28:38] [WARNING] [predict] [ALERT] 2026-06-19T03:28:38.112232 | Type: Anomaly (HIGH) | From: 52.1.212.189:443 -> 192.168.81.167:64662 | Packets: 12 | RF Conf: 82.00% | Note: RF low confidence=0.82
+[2026-06-19 04:28:48] [WARNING] [predict] [ALERT] 2026-06-19T03:28:48.849447 | Type: Anomaly (HIGH) | From: 216.239.36.223:443 -> 192.168.81.167:51342 | Packets: 21 | RF Conf: 84.00% | Note: RF low confidence=0.84
+[2026-06-19 04:28:51] [WARNING] [predict] [ALERT] 2026-06-19T03:28:51.596815 | Type: Anomaly (HIGH) | From: 192.168.81.167:63925 -> 34.168.43.76:443 | Packets: 8 | RF Conf: 84.00% | Note: RF low confidence=0.84
+[2026-06-19 04:28:55] [WARNING] [predict] [ALERT] 2026-06-19T03:28:55.444532 | Type: Anomaly (HIGH) | From: 192.168.81.167:58069 -> 57.144.39.32:443 | Packets: 4 | RF Conf: 84.00% | Note: RF low confidence=0.84
+[2026-06-19 04:29:04] [WARNING] [predict] [ALERT] 2026-06-19T03:29:04.492551 | Type: Anomaly (HIGH) | From: 184.73.118.133:443 -> 192.168.81.167:57324 | Packets: 38 | RF Conf: 78.00% | Note: RF low confidence=0.78
+[2026-06-19 04:29:04] [WARNING] [predict] [ALERT] 2026-06-19T03:29:04.688429 | Type: Anomaly (HIGH) | From: 192.168.81.167:60893 -> 140.82.121.3:443 | Packets: 11 | RF Conf: 84.00% | Note: RF low confidence=0.84
+[2026-06-19 04:29:05] [WARNING] [predict] [ALERT] 2026-06-19T03:29:05.117784 | Type: Anomaly (HIGH) | From: 192.168.81.167:57324 -> 184.73.118.133:443 | Packets: 30 | RF Conf: 81.00% | Note: RF low confidence=0.81
+[2026-06-19 04:29:12] [WARNING] [predict] [ALERT] 2026-06-19T03:29:12.468060 | Type: Anomaly (HIGH) | From: 192.168.81.167:60885 -> 172.217.215.95:443 | Packets: 12 | RF Conf: 82.00% | Note: RF low confidence=0.82
+[2026-06-19 04:29:12] [WARNING] [predict] [ALERT] 2026-06-19T03:29:12.567069 | Type: Anomaly (HIGH) | From: 172.217.215.95:443 -> 192.168.81.167:60885 | Packets: 15 | RF Conf: 84.00% | Note: RF low confidence=0.84

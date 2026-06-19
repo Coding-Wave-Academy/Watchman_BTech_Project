@@ -191,7 +191,7 @@ export default function Dashboard() {
                   <div className="flex items-center justify-between mb-0.5">
                     {alert.tx_hash ? (
                       alert.tx_hash.startsWith("0x") ? (
-                        <a href={`https://amoy.polygonscan.com/tx/${alert.tx_hash}`} target="_blank" rel="noreferrer" className="text-xs font-mono text-muted-foreground hover:text-primary transition-colors flex items-center gap-1">
+                        <a href={`https://celo-sepolia.blockscout.com/tx/${alert.tx_hash}`} target="_blank" rel="noreferrer" className="text-xs font-mono text-muted-foreground hover:text-primary transition-colors flex items-center gap-1">
                           {alert.tx_hash.substring(0, 16)}... <FaExternalLinkAlt className="h-2 w-2" />
                         </a>
                       ) : (
