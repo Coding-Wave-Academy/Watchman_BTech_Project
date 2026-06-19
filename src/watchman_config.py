@@ -49,11 +49,11 @@ DEFAULT_CONFIG: dict[str, Any] = {
         "isolation_threshold": -0.1,
     },
     "blockchain": {
-        "enabled": False,
-        "demo_mode": True,
+        "enabled": True,
+        "demo_mode": False,
         "anchor_interval_seconds": 60,
-        "polygon_rpc_url": "https://rpc-amoy.polygon.technology",
-        "contract_address": "",
+        "celo_rpc_url": "https://forno.celo-sepolia.celo-testnet.org",
+        "contract_address": "0xcec6152e54424db74d22f1fab308b2b75a732ed8de213c48567c08f63a9a8f34",
         "contract_abi_path": "blockchain/build/contracts/NIDSLogger.json",
     },
     "bootstrap": {

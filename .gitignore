@@ -41,7 +41,7 @@ dashboard/dist/
 # Project Specific
 data/
 !data/.gitkeep
-models/*.pkl
+# models/*.pkl
 !models/.gitkeep
 
 # IDEs
