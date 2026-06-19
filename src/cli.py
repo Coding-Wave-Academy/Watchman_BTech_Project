@@ -106,6 +106,21 @@ def install(
     console.print("[green]WatchMan installed.[/green]")
     console.print(f"Admin user: [bold]{username}[/bold]")
 
+@app.command()
+def login(username: str = typer.Option(..., prompt=True), password: str = typer.Option(..., prompt=True, hide_input=True)) -> None:
+    """Log in to the CLI."""
+    try:
+        import requests
+        resp = requests.post(_api_base() + "/auth/login", json={"username": username, "password": password}, timeout=10)
+        if resp.status_code == 200:
+            token = resp.json().get("token")
+            _token_path().write_text(token, encoding="utf-8")
+            console.print("[green]Successfully logged in.[/green]")
+        else:
+            console.print(f"[red]Login failed: {resp.status_code} {resp.text}[/red]")
+    except Exception as e:
+        console.print(f"[red]Could not connect to the API: {e}[/red]")
+
 
 @app.command()
 def start() -> None:
