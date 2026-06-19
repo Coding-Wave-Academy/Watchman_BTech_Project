@@ -106,38 +106,6 @@ def install(
     console.print("[green]WatchMan installed.[/green]")
     console.print(f"Admin user: [bold]{username}[/bold]")
 @app.command()
-def setup_server() -> None:
-    """Configure the server automatically with defaults and private key."""
-    import os
-    from pathlib import Path
-    
-    # 1. Regenerate config to pick up new Celo defaults
-    config_path = _token_path().parent / "watchman.config.json"
-    if config_path.exists():
-        config_path.unlink()
-    
-    cfg = load_config()
-    console.print("[green]Configuration reset to new Celo live defaults.[/green]")
-    
-    # 2. Prompt for private key and save to .env
-    pk = typer.prompt("Enter your Celo Private Key (starting with or without 0x)", hide_input=True)
-    if pk.startswith("0x"):
-        pk = pk[2:]
-        
-    env_path = BASE_DIR / ".env"
-    env_content = ""
-    if env_path.exists():
-        env_content = env_path.read_text(encoding="utf-8")
-        
-    lines = env_content.splitlines()
-    new_lines = [line for line in lines if not line.startswith("WATCHMAN_PRIVATE_KEY=")]
-    new_lines.append(f"WATCHMAN_PRIVATE_KEY=\"{pk}\"")
-    env_path.write_text("\n".join(new_lines) + "\n", encoding="utf-8")
-    
-    console.print("[green].env configured with private key.[/green]")
-    console.print("[bold]Setup complete! Run `sudo watchman restart` and `sudo watchman start-capture`.[/bold]")
-
-@app.command()
 def login(username: str = typer.Option(..., prompt=True), password: str = typer.Option(..., prompt=True, hide_input=True)) -> None:
     """Log in to the CLI."""
     try:
@@ -162,6 +130,24 @@ def start() -> None:
         raise typer.Exit(1)
         
     console.print("Starting WatchMan daemon...")
+    env_path = BASE_DIR / ".env"
+    if not env_path.exists() or "WATCHMAN_PRIVATE_KEY" not in env_path.read_text(encoding="utf-8"):
+        console.print("[yellow]Initial setup: Configuring Celo blockchain.[/yellow]")
+        pk = typer.prompt("Enter your Celo Private Key (starting with or without 0x)", hide_input=True)
+        if pk.startswith("0x"):
+            pk = pk[2:]
+        env_content = env_path.read_text(encoding="utf-8") if env_path.exists() else ""
+        lines = env_content.splitlines()
+        new_lines = [line for line in lines if not line.startswith("WATCHMAN_PRIVATE_KEY=")]
+        new_lines.append(f"WATCHMAN_PRIVATE_KEY=\"{pk}\"")
+        env_path.write_text("\n".join(new_lines) + "\n", encoding="utf-8")
+        
+        config_path = _token_path().parent / "watchman.config.json"
+        if config_path.exists():
+            config_path.unlink()
+        load_config()
+        console.print("[green]Configuration complete![/green]")
+
     try:
         subprocess.run(["systemctl", "start", "watchman"], check=True, capture_output=True)
         console.print("[green]Service started via systemd.[/green]")
@@ -191,6 +177,12 @@ def stop() -> None:
     """Stop the WatchMan daemon."""
     console.print("Stopping WatchMan daemon...")
     try:
+        import requests
+        requests.post(_api_base() + "/system/stop", headers=_api_headers(), timeout=5)
+    except Exception:
+        pass
+
+    try:
         subprocess.run(["systemctl", "stop", "watchman"], check=True)
         console.print("[green]Service stopped via systemd.[/green]")
     except Exception:
@@ -206,32 +198,6 @@ def restart() -> None:
         console.print("[green]Service restarted via systemd.[/green]")
     except Exception as e:
         console.print(f"[red]Failed to restart service: {e}[/red]")
-@app.command()
-def start_capture() -> None:
-    """Start the packet capture engine."""
-    try:
-        import requests
-        resp = requests.post(_api_base() + "/system/start", headers=_api_headers(), timeout=10)
-        if resp.status_code == 200:
-            console.print("[green]Packet capture started successfully.[/green]")
-        else:
-            console.print(f"[red]Failed: {resp.text}[/red]")
-    except Exception as e:
-        console.print(f"[red]Error connecting to API: {e}[/red]")
-
-@app.command()
-def stop_capture() -> None:
-    """Stop the packet capture engine."""
-    try:
-        import requests
-        resp = requests.post(_api_base() + "/system/stop", headers=_api_headers(), timeout=10)
-        if resp.status_code == 200:
-            console.print("[green]Packet capture stopped successfully.[/green]")
-        else:
-            console.print(f"[red]Failed: {resp.text}[/red]")
-    except Exception as e:
-        console.print(f"[red]Error connecting to API: {e}[/red]")
-
 @app.command()
 def update() -> None:
     """Update WatchMan to the latest version."""
@@ -268,6 +234,13 @@ def status() -> None:
 @app.command()
 def monitor(interval: int = typer.Option(2, help="Refresh interval in seconds.")) -> None:
     """Stream recent alerts to the terminal."""
+    try:
+        import requests
+        requests.post(_api_base() + "/system/start", headers=_api_headers(), timeout=5)
+        console.print("[green]Packet capture active.[/green]")
+    except Exception:
+        pass
+
     console.print("[cyan]Monitoring for network intrusions... (Press Ctrl+C to stop)[/cyan]")
     seen: set[str] = set()
     while True:
