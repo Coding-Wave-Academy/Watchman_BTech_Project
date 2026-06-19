@@ -68,20 +68,16 @@ receipt = w3.eth.wait_for_transaction_receipt(tx_hash)
 contract_address = receipt.contractAddress
 print(f"\n✅ Contract deployed successfully at address: {contract_address}")
 
-# Update watchman.config.json
-config_path = os.path.join(BASE_DIR, "data", "watchman.config.json")
-if os.path.exists(config_path):
-    with open(config_path, 'r') as f:
-        config = json.load(f)
-    
+# Update watchman.config.json using watchman_config helpers
+try:
+    from src.watchman_config import load_config, save_config, CONFIG_PATH
+    config = load_config()
     config["blockchain"]["contract_address"] = contract_address
     config["blockchain"]["contract_abi_path"] = "blockchain/build/contracts/WatchmanAnchor.json"
     config["blockchain"]["demo_mode"] = False
-    
-    with open(config_path, 'w') as f:
-        json.dump(config, f, indent=2)
-    print("\n✅ Updated data/watchman.config.json with the new contract address and disabled demo_mode!")
-else:
-    print("\n⚠️ Could not find data/watchman.config.json to update automatically. Please update it manually.")
+    save_config(config)
+    print(f"\n✅ Updated {CONFIG_PATH} with the new contract address and disabled demo_mode!")
+except Exception as e:
+    print(f"\n⚠️ Could not update configuration automatically: {e}")
 
 print("\nYou can now start the WatchMan backend! Your alerts will be anchored live to Celo Sepolia.")
