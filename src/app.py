@@ -140,6 +140,10 @@ def alert_stats(_: dict[str, Any] = Depends(current_user)) -> dict[str, Any]:
     return db.stats()
 
 
+@app.get("/alerts/trends")
+def alert_trends(_: dict[str, Any] = Depends(current_user)) -> list[dict[str, Any]]:
+    return db.get_trends()
+
 @app.get("/alerts/{alert_id}")
 def get_alert(alert_id: str, _: dict[str, Any] = Depends(current_user)) -> dict[str, Any]:
     alert = db.get_alert(alert_id)
@@ -172,10 +176,6 @@ def update_alert_status(
 
     return db.get_alert(alert_id) or {"alert_id": alert_id, "status": payload.status}
 
-
-@app.get("/alerts/trends")
-def alert_trends(_: dict[str, Any] = Depends(current_user)) -> list[dict[str, Any]]:
-    return db.get_trends()
 
 
 @app.get("/system/status")
