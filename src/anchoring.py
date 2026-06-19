@@ -133,4 +133,4 @@ class AnchorService:
         if receipt.status != 1:
             raise RuntimeError("Transaction failed on-chain")
             
-        return tx_hash.hex()
+        return f"0x{tx_hash.hex()}"
